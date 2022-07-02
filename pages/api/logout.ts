@@ -3,15 +3,16 @@ import { NextApiRequest, NextApiResponse } from 'next'
 import ironOptions from "../../lib/ironOptions"
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { method } = req
-  switch (method) {
-    case 'GET':
-      res.send({ address: req.session.siwe?.address })
-      break
-    default:
-      res.setHeader('Allow', ['GET'])
-      res.status(405).end(`Method ${method} Not Allowed`)
-  }
+    const { method } = req
+    switch (method) {
+        case 'GET':
+            req.session.destroy()
+            res.send({ ok: true })
+            break
+        default:
+            res.setHeader('Allow', ['GET'])
+            res.status(405).end(`Method ${method} Not Allowed`)
+    }
 }
 
 export default withIronSessionApiRoute(handler, ironOptions)
