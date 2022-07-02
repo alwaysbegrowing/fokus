@@ -2,10 +2,11 @@ import type { NextPage } from 'next';
 import type { FC } from 'react';
 import { useCallback, useState, useEffect } from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useAccount, useNetwork, useSignMessage } from 'wagmi'
+import { useAccount, useNetwork, useSignMessage, useDisconnect } from 'wagmi'
 import { SiweMessage } from 'siwe'
 
 const Home: NextPage = () => {
+  const { disconnect } = useDisconnect()
 
   // Fetch user when:
   useEffect(() => {
@@ -33,12 +34,21 @@ const Home: NextPage = () => {
     },
   })
 
+  useAccount({
+    async onDisconnect() {
+      console.log('Disconnected')
+
+      await fetch('/api/logout')
+      setState({})
+    },
+  })
+
   const [state, setState] = useState<{
     address?: string
     error?: Error
     loading?: boolean
   }>({})
-  const { address, isConnected } = useAccount()
+  const { address, isConnected, isDisconnected } = useAccount()
   const { chain: activeChain } = useNetwork()
   const { signMessageAsync } = useSignMessage()
 
@@ -76,6 +86,8 @@ const Home: NextPage = () => {
 
       setState((x) => ({ ...x, address, loading: false }))
     } catch (error) {
+      console.log('failed sign in')
+      disconnect()
       setState((x) => ({ ...x, error, loading: false }))
     }
   }, [])
@@ -91,14 +103,7 @@ const Home: NextPage = () => {
 
         <div>
           <div>Signed in as {state.address}</div>
-          <button
-            onClick={async () => {
-              await fetch('/api/logout')
-              setState({})
-            }}
-          >
-            Sign Out
-          </button>
+
         </div>
 
       </div>}
