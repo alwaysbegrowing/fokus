@@ -4,63 +4,42 @@ import { useCallback, useState, useEffect } from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useAccount, useNetwork, useSignMessage, useDisconnect } from 'wagmi'
 import { SiweMessage } from 'siwe'
+import { useUser } from '@/hooks/useUser';
+
+
 
 const Home: NextPage = () => {
   const { disconnect } = useDisconnect()
+  const { user, isLoading, refetchUser } = useUser()
+  const { address, isConnected } = useAccount()
 
-  // Fetch user when:
   useEffect(() => {
-    const handler = async () => {
-      try {
-        const res = await fetch('/api/hello')
-        const json = await res.json()
-        setState((x) => ({ ...x, address: json.address }))
-      } catch (_error) { }
+    if (isConnected && !user?.address && !isLoading) {
+      signIn()
     }
-    // 1. page loads
-    handler()
+  }, [isConnected, user?.address, isLoading])
 
-    // 2. window is focused (in case user logs out of another window)
-    window.addEventListener('focus', handler)
-    return () => window.removeEventListener('focus', handler)
-  }, [])
-  const account = useAccount({
-    onConnect({ address, connector, isReconnected }) {
-      console.log('Connected', { address, connector, isReconnected })
-      console.log({ state })
-      if (!state.address) {
-        signIn()
-      }
-    },
-  })
+
 
   useAccount({
     async onDisconnect() {
-      console.log('Disconnected')
-
       await fetch('/api/logout')
-      setState({})
+      refetchUser()
     },
   })
 
-  const [state, setState] = useState<{
-    address?: string
-    error?: Error
-    loading?: boolean
-  }>({})
-  const { address, isConnected, isDisconnected } = useAccount()
   const { chain: activeChain } = useNetwork()
   const { signMessageAsync } = useSignMessage()
 
 
-  const signIn = useCallback(async () => {
+  const signIn = async () => {
     try {
       const chainId = activeChain?.id
       if (!address || !chainId) return
 
-      setState((x) => ({ ...x, error: undefined, loading: true }))
       // Fetch random nonce, create SIWE message, and sign with wallet
       const nonceRes = await fetch('/api/nonce')
+      console.log(nonceRes)
       const message = new SiweMessage({
         domain: window.location.host,
         address,
@@ -84,30 +63,17 @@ const Home: NextPage = () => {
       })
       if (!verifyRes.ok) throw new Error('Error verifying message')
 
-      setState((x) => ({ ...x, address, loading: false }))
     } catch (error: any) {
       console.log('failed sign in')
       disconnect()
-      setState((x) => ({ ...x, error, loading: false }))
     }
-  }, [])
+  }
 
   return (
     <div className='py-6 justify-center text-center' >
       <div className='flex justify-center'>
         <ConnectButton />
-
       </div>
-      {state.address && <div>
-        {/* Account content goes here */}
-
-        <div>
-          <div>Signed in as {state.address}</div>
-
-        </div>
-
-      </div>}
-
     </div >
   );
 };
