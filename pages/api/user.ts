@@ -6,7 +6,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { method } = req
   switch (method) {
     case 'GET':
-      console.log(req.session)
       res.send({ address: req.session.siwe?.address })
       break
     default:

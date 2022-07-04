@@ -39,7 +39,6 @@ const Home: NextPage = () => {
 
       // Fetch random nonce, create SIWE message, and sign with wallet
       const nonceRes = await fetch('/api/nonce')
-      console.log(nonceRes)
       const message = new SiweMessage({
         domain: window.location.host,
         address,
