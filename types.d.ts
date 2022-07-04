@@ -4,3 +4,11 @@ declare module "iron-session" {
         nonce?: string
     }
 }
+
+declare module 'next' {
+    interface NextApiRequest {
+        session: IronSessionData
+    }
+}
+
+export default {}

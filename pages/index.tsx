@@ -85,7 +85,7 @@ const Home: NextPage = () => {
       if (!verifyRes.ok) throw new Error('Error verifying message')
 
       setState((x) => ({ ...x, address, loading: false }))
-    } catch (error) {
+    } catch (error: any) {
       console.log('failed sign in')
       disconnect()
       setState((x) => ({ ...x, error, loading: false }))
