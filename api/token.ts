@@ -1,3 +1,5 @@
+import { NextApiRequest, NextApiResponse } from 'next';
+
 const AccessToken = require('twilio').jwt.AccessToken;
 const VideoGrant = AccessToken.VideoGrant;
 
@@ -8,7 +10,6 @@ const twilioApiSecret = process.env.TWILIO_API_SECRET;
 
 const identity = 'user';
 
-import { NextApiRequest, NextApiResponse } from 'next';
 
 export default function handler(
     request: NextApiRequest,
@@ -35,3 +36,5 @@ export default function handler(
     response.status(200).json({
         token: token.toJwt()
     });
+
+}

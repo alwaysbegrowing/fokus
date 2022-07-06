@@ -34,6 +34,7 @@
     "lint-staged": "^9.5.0",
     "lodash.throttle": "^4.1.1",
     "nanoid": "^3.1.31",
+    "next": "^12.2.0",
     "prettier": "^1.19.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
@@ -109,7 +110,6 @@
       "pre-commit": "lint-staged"
     }
   },
-  "proxy": "http://localhost:8081/",
   "jest": {
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
