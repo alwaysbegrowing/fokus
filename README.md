@@ -200,10 +200,6 @@ Build the React app with
 
 This script will build the static assets for the application in the `build/` directory.
 
-### Tests
-
-This application has unit tests (using [Jest](https://jestjs.io/)) and end-to-end tests (using [Cypress](https://www.cypress.io/)). You can run the tests with the following scripts.
-
 #### Unit Tests
 
 Run unit tests with
@@ -212,15 +208,6 @@ Run unit tests with
 
 This will run all unit tests with Jest and output the results to the console.
 
-#### E2E Tests
-
-Run end to end tests with
-
-    npm run cypress:open
-
-This will open the Cypress test runner. When it's open, select a test file to run.
-
-**Note:** Be sure to complete the 'Getting Started' section before running these tests. These Cypress tests will connect to real Twilio rooms and real Twilio conversations, so you may be billed for any time that is used.
 
 ### Application Architecture
 
