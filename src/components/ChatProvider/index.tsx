@@ -1,7 +1,5 @@
 import React, { createContext, useCallback, useEffect, useRef, useState } from 'react'
-import { Client } from '@twilio/conversations'
-import { Conversation } from '@twilio/conversations/lib/conversation'
-import { Message } from '@twilio/conversations/lib/message'
+import { Conversation, Client, Message } from '@twilio/conversations'
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext'
 
 type ChatContextType = {
@@ -15,7 +13,7 @@ type ChatContextType = {
 
 export const ChatContext = createContext<ChatContextType>(null!)
 
-export const ChatProvider: React.FC = ({ children }) => {
+export const ChatProvider = ({ children }) => {
   const { room, onError } = useVideoContext()
   const isChatWindowOpenRef = useRef(false)
   const [isChatWindowOpen, setIsChatWindowOpen] = useState(false)
@@ -27,12 +25,12 @@ export const ChatProvider: React.FC = ({ children }) => {
   const connect = useCallback(
     (token: string) => {
       Client.create(token)
-        .then((client) => {
+        .then(client => {
           //@ts-ignore
           window.chatClient = client
           setChatClient(client)
         })
-        .catch((e) => {
+        .catch(e => {
           console.error(e)
           onError(new Error("There was a problem connecting to Twilio's conversation service."))
         })
@@ -43,8 +41,8 @@ export const ChatProvider: React.FC = ({ children }) => {
   useEffect(() => {
     if (conversation) {
       const handleMessageAdded = (message: Message) =>
-        setMessages((oldMessages) => [...oldMessages, message])
-      conversation.getMessages().then((newMessages) => setMessages(newMessages.items))
+        setMessages(oldMessages => [...oldMessages, message])
+      conversation.getMessages().then(newMessages => setMessages(newMessages.items))
       conversation.on('messageAdded', handleMessageAdded)
       return () => {
         conversation.off('messageAdded', handleMessageAdded)
@@ -68,12 +66,12 @@ export const ChatProvider: React.FC = ({ children }) => {
     if (room && chatClient) {
       chatClient
         .getConversationByUniqueName(room.sid)
-        .then((newConversation) => {
+        .then(newConversation => {
           //@ts-ignore
           window.chatConversation = newConversation
           setConversation(newConversation)
         })
-        .catch((e) => {
+        .catch(e => {
           console.error(e)
           onError(
             new Error('There was a problem getting the Conversation associated with this room.')

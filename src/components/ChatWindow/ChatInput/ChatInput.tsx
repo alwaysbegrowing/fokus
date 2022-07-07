@@ -1,14 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Button, CircularProgress, Grid, makeStyles } from '@material-ui/core'
 import clsx from 'clsx'
-import { Conversation } from '@twilio/conversations/lib/conversation'
+import { Conversation } from '@twilio/conversations'
 import FileAttachmentIcon from '../../../icons/FileAttachmentIcon'
 import { isMobile } from '../../../utils'
 import SendMessageIcon from '../../../icons/SendMessageIcon'
 import Snackbar from '../../Snackbar/Snackbar'
 import TextareaAutosize from '@material-ui/core/TextareaAutosize'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   chatInputContainer: {
     borderTop: '1px solid #e4e7e9',
     borderBottom: '1px solid #e4e7e9',
@@ -113,7 +113,7 @@ export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputP
       setFileSendError(null)
       conversation
         .sendMessage(formData)
-        .catch((e) => {
+        .catch(e => {
           if (e.code === 413) {
             setFileSendError('File size is too large. Maximum file size is 150MB.')
           } else {
@@ -141,7 +141,7 @@ export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputP
           [classes.isTextareaFocused]: isTextareaFocused,
         })}
       >
-        {/* 
+        {/*
         Here we add the "isTextareaFocused" class when the user is focused on the TextareaAutosize component.
         This helps to ensure a consistent appearance across all browsers. Adding padding to the TextareaAutosize
         component does not work well in Firefox. See: https://github.com/twilio/twilio-video-app-react/issues/498

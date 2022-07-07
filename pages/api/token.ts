@@ -13,7 +13,7 @@ if (
   !process.env.TWILIO_API_SECRET ||
   !process.env.CONVERSATIONS_SERVICE_SID
 ) {
-  throw Error('missing secrets')
+  throw new Error('missing secrets')
 }
 const { TWILIO_ACCOUNT_SID, TWILIO_API_KEY, TWILIO_API_SECRET, CONVERSATIONS_SERVICE_SID } =
   process.env
@@ -61,7 +61,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     await conversationsClient.conversations(room.sid).participants.create({ identity })
-  } catch (e) {
+  } catch (e: any) {
     console.log(identity, CONVERSATIONS_SERVICE_SID)
     console.log({ e })
     // Ignore "Participant already exists" error (50433)

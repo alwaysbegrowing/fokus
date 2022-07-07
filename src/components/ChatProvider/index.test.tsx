@@ -15,7 +15,7 @@ const mockClientCreate = Client.create as jest.Mock<any>
 
 const mockRoom = { sid: 'mockRoomSid' }
 
-const wrapper: React.FC = ({ children }) => <ChatProvider>{children}</ChatProvider>
+const wrapper = ({ children }) => <ChatProvider>{children}</ChatProvider>
 
 describe('the ChatProvider component', () => {
   beforeEach(() => {
@@ -138,7 +138,7 @@ describe('the ChatProvider component', () => {
     expect(result.current.hasUnreadMessages).toBe(false)
   })
 
-  it('should call onError when there is an error connecting with the conversations client', (done) => {
+  it('should call onError when there is an error connecting with the conversations client', done => {
     mockClientCreate.mockImplementationOnce(() => Promise.reject('mockError'))
     const { result } = renderHook(useChatContext, { wrapper })
     result.current.connect('mockToken')

@@ -2,8 +2,6 @@ import type { AppProps } from 'next/app'
 import React from 'react'
 import '../styles/globals.css'
 
-import ReactDOM from 'react-dom'
-
 import { CssBaseline } from '@material-ui/core'
 import { MuiThemeProvider } from '@material-ui/core/styles'
 
@@ -16,7 +14,7 @@ import { VideoProvider } from '../src/components/VideoProvider'
 import useConnectionOptions from '../src/utils/useConnectionOptions/useConnectionOptions'
 import UnsupportedBrowserWarning from '../src/components/UnsupportedBrowserWarning/UnsupportedBrowserWarning'
 
-const VideoApp = (props) => {
+const VideoApp = (props: { children: any }) => {
   const { error, setError } = useAppState()
   const connectionOptions = useConnectionOptions()
 

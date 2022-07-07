@@ -21,7 +21,7 @@ window.fetch = jest.fn(() =>
   })
 )
 
-const wrapper: React.FC = ({ children }) => <AppStateProvider>{children}</AppStateProvider>
+const wrapper = ({ children }) => <AppStateProvider>{children}</AppStateProvider>
 
 describe('the useAppState hook', () => {
   beforeEach(jest.clearAllMocks)
@@ -91,7 +91,7 @@ describe('the useAppState hook', () => {
       mockUsePasscodeAuth.mockImplementation(() => {
         return {
           getToken: () =>
-            new Promise((resolve) => {
+            new Promise(resolve => {
               // Using fake timers so we can control when the promise resolves
               setTimeout(() => resolve({ text: () => 'mockVideoToken' }), 10)
             }),
