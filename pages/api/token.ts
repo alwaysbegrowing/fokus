@@ -1,4 +1,4 @@
-import { NextApiRequest, NextApiResponse } from 'next'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { jwt } from 'twilio'
 const { VideoGrant } = jwt.AccessToken
@@ -22,8 +22,8 @@ const client = require('twilio')(TWILIO_API_KEY, TWILIO_API_SECRET, {
   accountSid: TWILIO_ACCOUNT_SID,
 })
 
-export default async function handler(request: NextApiRequest, response: NextApiResponse) {
-  const { room_name, user_identity: identity } = request.body
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const { room_name, user_identity: identity } = req.body
 
   let room
 
@@ -35,7 +35,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
       // If room doesn't exist, create it
       room = await client.video.rooms.create({ uniqueName: room_name })
     } catch (e) {
-      return response.status(500).json({ error: 'error creating room' })
+      return res.status(500).json({ error: 'error creating room' })
     }
   }
 
@@ -55,7 +55,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
         'timers.closed': 'P1D',
       })
     } catch (e) {
-      return response.status(500).json({ error: 'error!' })
+      return res.status(500).json({ error: 'error!' })
     }
   }
 
@@ -65,8 +65,8 @@ export default async function handler(request: NextApiRequest, response: NextApi
     console.log(identity, CONVERSATIONS_SERVICE_SID)
     console.log({ e })
     // Ignore "Participant already exists" error (50433)
-    if (e.code !== 50433) {
-      return response.status(500).json({ error: 'error creating participant' })
+    if (e?.code !== 50433) {
+      return res.status(500).json({ error: 'error creating participant' })
     }
   }
 
@@ -80,7 +80,7 @@ export default async function handler(request: NextApiRequest, response: NextApi
   const chatGrant = new ChatGrant({ serviceSid: CONVERSATIONS_SERVICE_SID })
   token.addGrant(chatGrant)
 
-  return response.status(200).json({
+  return res.status(200).json({
     token: token.toJwt(),
   })
 }
