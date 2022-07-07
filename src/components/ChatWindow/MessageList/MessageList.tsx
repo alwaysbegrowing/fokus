@@ -1,5 +1,5 @@
 import React from 'react'
-import { Message } from '@twilio/conversation'
+import { Message } from '@twilio/conversations'
 import MessageInfo from './MessageInfo/MessageInfo'
 import MessageListScrollContainer from './MessageListScrollContainer/MessageListScrollContainer'
 import TextMessage from './TextMessage/TextMessage'
