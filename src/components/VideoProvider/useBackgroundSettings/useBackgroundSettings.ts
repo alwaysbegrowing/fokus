@@ -196,7 +196,7 @@ export default function useBackgroundSettings(
       SELECTED_BACKGROUND_SETTINGS_KEY,
       JSON.stringify(backgroundSettings)
     )
-  }, [backgroundSettings, videoTrack, room, removeProcessor])
+  }, [addProcessor, backgroundSettings, videoTrack, room, removeProcessor])
 
   return [backgroundSettings, setBackgroundSettings] as const
 }

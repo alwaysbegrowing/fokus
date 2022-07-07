@@ -19,7 +19,6 @@ const useStyles = makeStyles(theme => ({
     border: '0',
     resize: 'none',
     fontSize: '14px',
-    fontFamily: 'Inter',
     outline: 'none',
   },
   button: {

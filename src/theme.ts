@@ -110,9 +110,6 @@ export default createTheme({
       },
     },
   },
-  typography: {
-    fontFamily: 'Inter, sans-serif',
-  },
   palette: {
     primary: {
       main: '#027AC5',

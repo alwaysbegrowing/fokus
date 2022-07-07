@@ -13,7 +13,7 @@ type ChatContextType = {
 
 export const ChatContext = createContext<ChatContextType>(null!)
 
-export const ChatProvider = ({ children }) => {
+export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const { room, onError } = useVideoContext()
   const isChatWindowOpenRef = useRef(false)
   const [isChatWindowOpen, setIsChatWindowOpen] = useState(false)

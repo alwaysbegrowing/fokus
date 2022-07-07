@@ -1,7 +1,7 @@
 import React from 'react'
 import FileDownloadIcon from '../../../../icons/FileDownloadIcon'
 import { makeStyles } from '@material-ui/core/styles'
-import { Media } from '@twilio/conversations/lib/media'
+import { Media } from '@twilio/conversations'
 
 const useStyles = makeStyles({
   messageContainer: {
@@ -51,7 +51,7 @@ export default function FileMessage({ media }: MediaMessageProps) {
   const classes = useStyles()
 
   const handleClick = () => {
-    media.getContentTemporaryUrl().then((url) => {
+    media.getContentTemporaryUrl().then(url => {
       const anchorEl = document.createElement('a')
 
       anchorEl.href = url
