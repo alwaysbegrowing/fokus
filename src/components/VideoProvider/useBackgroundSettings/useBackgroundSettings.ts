@@ -1,6 +1,11 @@
 import { LocalVideoTrack, Room } from 'twilio-video'
 import { useState, useEffect, useCallback } from 'react'
 import { SELECTED_BACKGROUND_SETTINGS_KEY } from '../../../constants'
+import {
+  GaussianBlurBackgroundProcessor,
+  VirtualBackgroundProcessor,
+  ImageFit,
+} from '@twilio/video-processors'
 import Abstract from '../../../images/Abstract.jpg'
 import AbstractThumb from '../../../images/thumb/Abstract.jpg'
 import BohoHome from '../../../images/BohoHome.jpg'
@@ -34,11 +39,7 @@ import PlantThumb from '../../../images/thumb/Plant.jpg'
 import SanFrancisco from '../../../images/SanFrancisco.jpg'
 import SanFranciscoThumb from '../../../images/thumb/SanFrancisco.jpg'
 import { Thumbnail } from '../../BackgroundSelectionDialog/BackgroundThumbnail/BackgroundThumbnail'
-import {
-  GaussianBlurBackgroundProcessor,
-  ImageFit,
-  VirtualBackgroundProcessor,
-} from '@twilio/video-processors'
+import { isWebRTCSupported } from '../../UnsupportedBrowserWarning/UnsupportedBrowserWarning'
 
 export interface BackgroundSettings {
   type: Thumbnail
@@ -125,8 +126,8 @@ export const backgroundConfig = {
 }
 
 const virtualBackgroundAssets = '/virtualbackground'
-let blurProcessor: any
-let virtualBackgroundProcessor: any
+let blurProcessor: GaussianBlurBackgroundProcessor
+let virtualBackgroundProcessor: VirtualBackgroundProcessor
 
 export default function useBackgroundSettings(
   videoTrack: LocalVideoTrack | undefined,
@@ -155,6 +156,9 @@ export default function useBackgroundSettings(
   )
 
   useEffect(() => {
+    if (!isWebRTCSupported()) {
+      return
+    }
     // make sure localParticipant has joined room before applying video processors
     // this ensures that the video processors are not applied on the LocalVideoPreview
     const handleProcessorChange = async () => {
@@ -177,7 +181,7 @@ export default function useBackgroundSettings(
       }
 
       if (backgroundSettings.type === 'blur') {
-        //addProcessor(blurProcessor);
+        addProcessor(blurProcessor)
       } else if (
         backgroundSettings.type === 'image' &&
         typeof backgroundSettings.index === 'number'
@@ -193,7 +197,7 @@ export default function useBackgroundSettings(
       SELECTED_BACKGROUND_SETTINGS_KEY,
       JSON.stringify(backgroundSettings)
     )
-  }, [addProcessor, backgroundSettings, videoTrack, room, removeProcessor])
+  }, [backgroundSettings, videoTrack, room, addProcessor, removeProcessor])
 
   return [backgroundSettings, setBackgroundSettings] as const
 }

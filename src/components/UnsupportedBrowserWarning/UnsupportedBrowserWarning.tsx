@@ -15,7 +15,7 @@ const useStyles = makeStyles({
   },
 })
 
-function isWebRTCSupported() {
+export function isWebRTCSupported() {
   return (
     typeof navigator === 'object' &&
     typeof navigator.mediaDevices === 'object' &&
