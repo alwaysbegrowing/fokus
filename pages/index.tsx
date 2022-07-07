@@ -1,5 +1,6 @@
 import React from 'react'
 import { styled, Theme } from '@material-ui/core/styles'
+import Head from 'next/head'
 
 import MenuBar from '../src/components/MenuBar/MenuBar'
 import MobileTopMenuBar from '../src/components/MobileTopMenuBar/MobileTopMenuBar'
@@ -37,6 +38,11 @@ export default function App() {
 
   return (
     <Container style={{ height }}>
+      <Head>
+        <meta charSet="utf-8" />
+        <title>Focus | An always be growing initiative - abg.garden</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       {roomState === 'disconnected' ? (
         <PreJoinScreens />
       ) : (
