@@ -34,3 +34,4 @@ serviceAccountKey.json
 
 public/virtualbackground/
 .vercel
+.next
