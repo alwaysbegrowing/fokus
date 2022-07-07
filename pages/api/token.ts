@@ -62,10 +62,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     await conversationsClient.conversations(room.sid).participants.create({ identity })
   } catch (e: any) {
-    console.log(identity, CONVERSATIONS_SERVICE_SID)
-    console.log({ e })
     // Ignore "Participant already exists" error (50433)
     if (e?.code !== 50433) {
+      console.log(identity, CONVERSATIONS_SERVICE_SID)
+      console.log({ e })
       return res.status(500).json({ error: 'error creating participant' })
     }
   }
