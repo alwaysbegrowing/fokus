@@ -15,10 +15,19 @@ const useStyles = makeStyles({
   },
 });
 
+function isWebRTCSupported() {
+  return (
+    typeof navigator === 'object' &&
+    typeof navigator.mediaDevices === 'object' &&
+    typeof navigator.mediaDevices.getUserMedia === 'function' &&
+    typeof RTCPeerConnection === 'function'
+  );
+}
+
 export default function UnsupportedBrowserWarning({ children }: { children: React.ReactElement }) {
   const classes = useStyles();
 
-  if (!Video.isSupported) {
+  if (!isWebRTCSupported()) {
     return (
       <Container>
         <Grid container justifyContent="center" className={classes.container}>
