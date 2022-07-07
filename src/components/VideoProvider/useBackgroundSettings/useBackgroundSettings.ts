@@ -155,9 +155,6 @@ export default function useBackgroundSettings(
   )
 
   useEffect(() => {
-    if (!true) {
-      return
-    }
     // make sure localParticipant has joined room before applying video processors
     // this ensures that the video processors are not applied on the LocalVideoPreview
     const handleProcessorChange = async () => {
