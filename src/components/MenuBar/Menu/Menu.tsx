@@ -26,6 +26,7 @@ import useVideoContext from '../../../hooks/useVideoContext/useVideoContext'
 import FlipCameraIcon from '../../../icons/FlipCameraIcon'
 import useFlipCameraToggle from '../../../hooks/useFlipCameraToggle/useFlipCameraToggle'
 import { VideoRoomMonitor } from '@twilio/video-room-monitor'
+import { isWebRTCSupported } from '../../UnsupportedBrowserWarning/UnsupportedBrowserWarning'
 
 export const IconContainer = styled('div')({
   display: 'flex',
@@ -52,7 +53,7 @@ export default function Menu(props: { buttonClassName?: string }) {
   return (
     <>
       <Button
-        onClick={() => setMenuOpen((isOpen) => !isOpen)}
+        onClick={() => setMenuOpen(isOpen => !isOpen)}
         ref={anchorRef}
         className={props.buttonClassName}
         data-cy-more-button
@@ -68,7 +69,7 @@ export default function Menu(props: { buttonClassName?: string }) {
       </Button>
       <MenuContainer
         open={menuOpen}
-        onClose={() => setMenuOpen((isOpen) => !isOpen)}
+        onClose={() => setMenuOpen(isOpen => !isOpen)}
         anchorEl={anchorRef.current}
         anchorOrigin={{
           vertical: 'top',
@@ -86,7 +87,7 @@ export default function Menu(props: { buttonClassName?: string }) {
           <Typography variant="body1">Audio and Video Settings</Typography>
         </MenuItem>
 
-        {true && (
+        {isWebRTCSupported() && (
           <MenuItem
             onClick={() => {
               setIsBackgroundSelectionOpen(true)
