@@ -5,6 +5,7 @@ import MediaErrorSnackbar from './MediaErrorSnackbar/MediaErrorSnackbar'
 import RoomNameScreen from './RoomNameScreen/RoomNameScreen'
 import { useAppState } from '../../state'
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext'
+import { useRouter } from 'next/router'
 
 export enum Steps {
   roomNameStep,
@@ -13,8 +14,10 @@ export enum Steps {
 
 export default function PreJoinScreens() {
   const { user } = useAppState()
+  const router = useRouter()
+
   const { getAudioAndVideoTracks } = useVideoContext()
-  const { URLRoomName } = { URLRoomName: 'test' }
+  const { URLRoomName } = { URLRoomName: router?.query?.slug || 'test' }
   const [step, setStep] = useState(Steps.roomNameStep)
 
   const [name, setName] = useState<string>(user?.displayName || '')
@@ -33,7 +36,7 @@ export default function PreJoinScreens() {
 
   useEffect(() => {
     if (step === Steps.deviceSelectionStep && !mediaError) {
-      getAudioAndVideoTracks().catch((error) => {
+      getAudioAndVideoTracks().catch(error => {
         console.log('Error acquiring local media:')
         console.dir(error)
         setMediaError(error)
