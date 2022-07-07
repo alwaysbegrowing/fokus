@@ -3,6 +3,14 @@
   "version": "0.6.5",
   "private": true,
   "license": "Apache-2.0",
+  "scripts": {
+    "prepare": "husky install",
+    "postinstall": "rimraf public/virtualbackground && copyfiles -f node_modules/@twilio/video-processors/dist/build/* public/virtualbackground",
+    "start": "next start",
+    "dev": "next dev",
+    "build": "next build",
+    "test": "cross-env TZ=utc jest"
+  },
   "dependencies": {
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
@@ -65,17 +73,12 @@
     "typescript": "^4.7.4"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx,ts,tsx,json,css,scss,md}": [
-      "prettier --write",
-      "git add"
+    "*.+(js|jsx|ts|tsx)": [
+      "eslint --fix"
+    ],
+    "*.+(js|jsx|ts|tsx|json|css|md|mdx)": [
+      "prettier --write"
     ]
-  },
-  "scripts": {
-    "postinstall": "rimraf public/virtualbackground && copyfiles -f node_modules/@twilio/video-processors/dist/build/* public/virtualbackground",
-    "start": "next start",
-    "dev": "next dev",
-    "build": "next build",
-    "test": "cross-env TZ=utc jest"
   },
   "eslintConfig": {
     "extends": "react-app",
@@ -97,11 +100,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "jest": {
     "snapshotSerializers": [
