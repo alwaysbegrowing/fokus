@@ -27,7 +27,7 @@ function isWebRTCSupported() {
 export default function UnsupportedBrowserWarning({ children }: { children: React.ReactElement }) {
   const classes = useStyles()
 
-  if (!Video.isSupported) {
+  if (!isWebRTCSupported()) {
     return (
       <Container>
         <Grid container justifyContent="center" className={classes.container}>
