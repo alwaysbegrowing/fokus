@@ -7,7 +7,7 @@ import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import Divider from '@material-ui/core/Divider'
 
-import { version as appVersion } from '../../../package.json'
+import packageInfo from '../../../package.json'
 import Video from 'twilio-video'
 import { useAppState } from '../../state'
 
@@ -25,7 +25,7 @@ function AboutDialog({ open, onClose }: PropsWithChildren<AboutDialogProps>) {
       <DialogContent>
         <DialogContentText>Browser supported: {String(Video.isSupported)}</DialogContentText>
         <DialogContentText>SDK Version: {Video.version}</DialogContentText>
-        <DialogContentText>App Version: {appVersion}</DialogContentText>
+        <DialogContentText>App Version: {packageInfo.version}</DialogContentText>
         <DialogContentText>
           Deployed Tag: {process.env.REACT_APP_GIT_TAG || 'N/A'}
         </DialogContentText>
