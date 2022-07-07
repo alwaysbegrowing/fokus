@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 export default function FileDownloadIcon() {
   return (
@@ -46,5 +46,5 @@ export default function FileDownloadIcon() {
         fill="#707578"
       />
     </svg>
-  );
+  )
 }

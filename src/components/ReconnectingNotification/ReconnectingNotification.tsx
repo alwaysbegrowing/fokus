@@ -1,9 +1,9 @@
-import React from 'react';
-import Snackbar from '../Snackbar/Snackbar';
-import useRoomState from '../../hooks/useRoomState/useRoomState';
+import React from 'react'
+import Snackbar from '../Snackbar/Snackbar'
+import useRoomState from '../../hooks/useRoomState/useRoomState'
 
 export default function ReconnectingNotification() {
-  const roomState = useRoomState();
+  const roomState = useRoomState()
 
   return (
     <Snackbar
@@ -12,5 +12,5 @@ export default function ReconnectingNotification() {
       message="Reconnecting to room..."
       open={roomState === 'reconnecting'}
     />
-  );
+  )
 }

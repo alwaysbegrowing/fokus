@@ -1,8 +1,14 @@
-import React from 'react';
+import React from 'react'
 
 export default function WarningIcon() {
   return (
-    <svg width="16px" height="14px" viewBox="0 0 16 14" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="16px"
+      height="14px"
+      viewBox="0 0 16 14"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
         <g transform="translate(-273.000000, -162.000000)" fill="#E46216">
           <g transform="translate(251.000000, 143.000000)">
@@ -13,5 +19,5 @@ export default function WarningIcon() {
         </g>
       </g>
     </svg>
-  );
+  )
 }

@@ -1,10 +1,10 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import MessageList from './MessageList';
+import React from 'react'
+import { render } from '@testing-library/react'
+import MessageList from './MessageList'
 
 jest.mock('../../../hooks/useVideoContext/useVideoContext', () => () => ({
   room: { localParticipant: { identity: 'olivia' } },
-}));
+}))
 
 const messages: any = [
   {
@@ -66,11 +66,11 @@ const messages: any = [
     sid: 'IMXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX8',
     type: 'media',
   },
-];
+]
 
 describe('the messageList component', () => {
   it('should render correctly', () => {
-    const { container } = render(<MessageList messages={messages} />);
-    expect(container).toMatchSnapshot();
-  });
-});
+    const { container } = render(<MessageList messages={messages} />)
+    expect(container).toMatchSnapshot()
+  })
+})

@@ -1,11 +1,11 @@
-import React from 'react';
-import { makeStyles, Theme, Typography } from '@material-ui/core';
-import Swoosh from './swoosh';
-import VideoLogo from './VideoLogo';
-import TwilioLogo from './TwilioLogo';
-import { useAppState } from '../../state';
-import UserMenu from './UserMenu/UserMenu';
-import { useRouter } from 'next/router';
+import React from 'react'
+import { makeStyles, Theme, Typography } from '@material-ui/core'
+import Swoosh from './swoosh'
+import VideoLogo from './VideoLogo'
+import TwilioLogo from './TwilioLogo'
+import { useAppState } from '../../state'
+import UserMenu from './UserMenu/UserMenu'
+import { useRouter } from 'next/router'
 
 const useStyles = makeStyles((theme: Theme) => ({
   background: {
@@ -87,16 +87,16 @@ const useStyles = makeStyles((theme: Theme) => ({
       fontSize: '1.1rem',
     },
   },
-}));
+}))
 
 interface IntroContainerProps {
-  children: React.ReactNode;
+  children: React.ReactNode
 }
 
 const IntroContainer = (props: IntroContainerProps) => {
-  const classes = useStyles();
-  const { user } = useAppState();
-  const { location } = useRouter();
+  const classes = useStyles()
+  const { user } = useAppState()
+  const { location } = useRouter()
 
   return (
     <div className={classes.background}>
@@ -116,7 +116,7 @@ const IntroContainer = (props: IntroContainerProps) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default IntroContainer;
+export default IntroContainer

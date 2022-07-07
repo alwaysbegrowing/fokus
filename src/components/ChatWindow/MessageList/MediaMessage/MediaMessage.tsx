@@ -1,7 +1,7 @@
-import React from 'react';
-import FileDownloadIcon from '../../../../icons/FileDownloadIcon';
-import { makeStyles } from '@material-ui/core/styles';
-import { Media } from '@twilio/conversations/lib/media';
+import React from 'react'
+import FileDownloadIcon from '../../../../icons/FileDownloadIcon'
+import { makeStyles } from '@material-ui/core/styles'
+import { Media } from '@twilio/conversations/lib/media'
 
 const useStyles = makeStyles({
   messageContainer: {
@@ -35,35 +35,35 @@ const useStyles = makeStyles({
   size: {
     fontWeight: 400,
   },
-});
+})
 
 interface MediaMessageProps {
-  media: Media;
+  media: Media
 }
 
 export function formatFileSize(bytes: number, suffixIndex = 0): string {
-  const suffixes = ['bytes', 'KB', 'MB', 'GB'];
-  if (bytes < 1000) return +bytes.toFixed(2) + ' ' + suffixes[suffixIndex];
-  return formatFileSize(bytes / 1024, suffixIndex + 1);
+  const suffixes = ['bytes', 'KB', 'MB', 'GB']
+  if (bytes < 1000) return +bytes.toFixed(2) + ' ' + suffixes[suffixIndex]
+  return formatFileSize(bytes / 1024, suffixIndex + 1)
 }
 
 export default function FileMessage({ media }: MediaMessageProps) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   const handleClick = () => {
-    media.getContentTemporaryUrl().then(url => {
-      const anchorEl = document.createElement('a');
+    media.getContentTemporaryUrl().then((url) => {
+      const anchorEl = document.createElement('a')
 
-      anchorEl.href = url;
-      anchorEl.target = '_blank';
-      anchorEl.rel = 'noopener';
+      anchorEl.href = url
+      anchorEl.target = '_blank'
+      anchorEl.rel = 'noopener'
 
       // setTimeout is needed in order to open files in iOS Safari.
       setTimeout(() => {
-        anchorEl.click();
-      });
-    });
-  };
+        anchorEl.click()
+      })
+    })
+  }
 
   return (
     <div className={classes.messageContainer} onClick={handleClick}>
@@ -75,5 +75,5 @@ export default function FileMessage({ media }: MediaMessageProps) {
         <p className={classes.size}>{formatFileSize(media.size)} - Click to open</p>
       </div>
     </div>
-  );
+  )
 }

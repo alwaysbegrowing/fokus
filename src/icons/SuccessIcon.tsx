@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 export function SuccessIcon() {
   return (
@@ -9,5 +9,5 @@ export function SuccessIcon() {
         transform="translate(-588 -698) translate(588 698)"
       />
     </svg>
-  );
+  )
 }

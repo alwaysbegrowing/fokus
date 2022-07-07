@@ -1,21 +1,27 @@
-import React from 'react';
-import clsx from 'clsx';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
+import React from 'react'
+import clsx from 'clsx'
+import { makeStyles, Theme } from '@material-ui/core/styles'
+import {
+  LocalAudioTrack,
+  LocalVideoTrack,
+  Participant,
+  RemoteAudioTrack,
+  RemoteVideoTrack,
+} from 'twilio-video'
 
-import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
-import AvatarIcon from '../../icons/AvatarIcon';
-import NetworkQualityLevel from '../NetworkQualityLevel/NetworkQualityLevel';
-import Tooltip from '@material-ui/core/Tooltip';
-import Typography from '@material-ui/core/Typography';
+import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator'
+import AvatarIcon from '../../icons/AvatarIcon'
+import NetworkQualityLevel from '../NetworkQualityLevel/NetworkQualityLevel'
+import Tooltip from '@material-ui/core/Tooltip'
+import Typography from '@material-ui/core/Typography'
 
-import useIsRecording from '../../hooks/useIsRecording/useIsRecording';
-import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
-import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
-import usePublications from '../../hooks/usePublications/usePublications';
-import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant';
-import useTrack from '../../hooks/useTrack/useTrack';
-import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import useIsRecording from '../../hooks/useIsRecording/useIsRecording'
+import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff'
+import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting'
+import usePublications from '../../hooks/usePublications/usePublications'
+import useScreenShareParticipant from '../../hooks/useScreenShareParticipant/useScreenShareParticipant'
+import useTrack from '../../hooks/useTrack/useTrack'
+import useVideoContext from '../../hooks/useVideoContext/useVideoContext'
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -108,36 +114,39 @@ const useStyles = makeStyles((theme: Theme) => ({
       background: '#A90000',
     },
   },
-}));
+}))
 
 interface MainParticipantInfoProps {
-  participant: Participant;
-  children: React.ReactNode;
+  participant: Participant
+  children: React.ReactNode
 }
 
 export default function MainParticipantInfo({ participant, children }: MainParticipantInfoProps) {
-  const classes = useStyles();
-  const { room } = useVideoContext();
-  const localParticipant = room!.localParticipant;
-  const isLocal = localParticipant === participant;
+  const classes = useStyles()
+  const { room } = useVideoContext()
+  const localParticipant = room!.localParticipant
+  const isLocal = localParticipant === participant
 
-  const screenShareParticipant = useScreenShareParticipant();
-  const isRemoteParticipantScreenSharing = screenShareParticipant && screenShareParticipant !== localParticipant;
+  const screenShareParticipant = useScreenShareParticipant()
+  const isRemoteParticipantScreenSharing =
+    screenShareParticipant && screenShareParticipant !== localParticipant
 
-  const publications = usePublications(participant);
-  const videoPublication = publications.find(p => !p.trackName.includes('screen') && p.kind === 'video');
-  const screenSharePublication = publications.find(p => p.trackName.includes('screen'));
+  const publications = usePublications(participant)
+  const videoPublication = publications.find(
+    (p) => !p.trackName.includes('screen') && p.kind === 'video'
+  )
+  const screenSharePublication = publications.find((p) => p.trackName.includes('screen'))
 
-  const videoTrack = useTrack(screenSharePublication || videoPublication);
-  const isVideoEnabled = Boolean(videoTrack);
+  const videoTrack = useTrack(screenSharePublication || videoPublication)
+  const isVideoEnabled = Boolean(videoTrack)
 
-  const audioPublication = publications.find(p => p.kind === 'audio');
-  const audioTrack = useTrack(audioPublication) as LocalAudioTrack | RemoteAudioTrack | undefined;
+  const audioPublication = publications.find((p) => p.kind === 'audio')
+  const audioTrack = useTrack(audioPublication) as LocalAudioTrack | RemoteAudioTrack | undefined
 
-  const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
-  const isParticipantReconnecting = useParticipantIsReconnecting(participant);
+  const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack)
+  const isParticipantReconnecting = useParticipantIsReconnecting(participant)
 
-  const isRecording = useIsRecording();
+  const isRecording = useIsRecording()
 
   return (
     <div
@@ -187,5 +196,5 @@ export default function MainParticipantInfo({ participant, children }: MainParti
       )}
       {children}
     </div>
-  );
+  )
 }

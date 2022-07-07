@@ -1,6 +1,14 @@
-import React, { ChangeEvent, FormEvent } from 'react';
-import { Typography, makeStyles, TextField, Grid, Button, InputLabel, Theme } from '@material-ui/core';
-import { useAppState } from '../../../state';
+import React, { ChangeEvent, FormEvent } from 'react'
+import {
+  Typography,
+  makeStyles,
+  TextField,
+  Grid,
+  Button,
+  InputLabel,
+  Theme,
+} from '@material-ui/core'
+import { useAppState } from '../../../state'
 
 const useStyles = makeStyles((theme: Theme) => ({
   gutterBottom: {
@@ -25,29 +33,35 @@ const useStyles = makeStyles((theme: Theme) => ({
       width: '100%',
     },
   },
-}));
+}))
 
 interface RoomNameScreenProps {
-  name: string;
-  roomName: string;
-  setName: (name: string) => void;
-  setRoomName: (roomName: string) => void;
-  handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
+  name: string
+  roomName: string
+  setName: (name: string) => void
+  setRoomName: (roomName: string) => void
+  handleSubmit: (event: FormEvent<HTMLFormElement>) => void
 }
 
-export default function RoomNameScreen({ name, roomName, setName, setRoomName, handleSubmit }: RoomNameScreenProps) {
-  const classes = useStyles();
-  const { user } = useAppState();
+export default function RoomNameScreen({
+  name,
+  roomName,
+  setName,
+  setRoomName,
+  handleSubmit,
+}: RoomNameScreenProps) {
+  const classes = useStyles()
+  const { user } = useAppState()
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setName(event.target.value);
-  };
+    setName(event.target.value)
+  }
 
   const handleRoomNameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setRoomName(event.target.value);
-  };
+    setRoomName(event.target.value)
+  }
 
-  const hasUsername = !window.location.search.includes('customIdentity=true') && user?.displayName;
+  const hasUsername = !window.location.search.includes('customIdentity=true') && user?.displayName
 
   return (
     <>
@@ -104,5 +118,5 @@ export default function RoomNameScreen({ name, roomName, setName, setRoomName, h
         </Grid>
       </form>
     </>
-  );
+  )
 }

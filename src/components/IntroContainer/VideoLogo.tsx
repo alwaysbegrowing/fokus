@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 export default function VideoLogo() {
   return (
@@ -14,5 +14,5 @@ export default function VideoLogo() {
         />
       </g>
     </svg>
-  );
+  )
 }

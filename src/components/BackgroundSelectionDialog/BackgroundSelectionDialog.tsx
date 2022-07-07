@@ -1,10 +1,10 @@
-import React from 'react';
-import BackgroundSelectionHeader from './BackgroundSelectionHeader/BackgroundSelectionHeader';
-import BackgroundThumbnail from './BackgroundThumbnail/BackgroundThumbnail';
-import Drawer from '@material-ui/core/Drawer';
-import { makeStyles, Theme } from '@material-ui/core/styles';
-import { backgroundConfig } from '../VideoProvider/useBackgroundSettings/useBackgroundSettings';
-import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import React from 'react'
+import BackgroundSelectionHeader from './BackgroundSelectionHeader/BackgroundSelectionHeader'
+import BackgroundThumbnail from './BackgroundThumbnail/BackgroundThumbnail'
+import Drawer from '@material-ui/core/Drawer'
+import { makeStyles, Theme } from '@material-ui/core/styles'
+import { backgroundConfig } from '../VideoProvider/useBackgroundSettings/useBackgroundSettings'
+import useVideoContext from '../../hooks/useVideoContext/useVideoContext'
 
 const useStyles = makeStyles((theme: Theme) => ({
   drawer: {
@@ -18,14 +18,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     padding: '5px',
     overflowY: 'auto',
   },
-}));
+}))
 
 function BackgroundSelectionDialog() {
-  const classes = useStyles();
-  const { isBackgroundSelectionOpen, setIsBackgroundSelectionOpen } = useVideoContext();
+  const classes = useStyles()
+  const { isBackgroundSelectionOpen, setIsBackgroundSelectionOpen } = useVideoContext()
 
-  const imageNames = backgroundConfig.imageNames;
-  const images = backgroundConfig.images;
+  const imageNames = backgroundConfig.imageNames
+  const images = backgroundConfig.images
 
   return (
     <Drawer
@@ -52,7 +52,7 @@ function BackgroundSelectionDialog() {
         ))}
       </div>
     </Drawer>
-  );
+  )
 }
 
-export default BackgroundSelectionDialog;
+export default BackgroundSelectionDialog

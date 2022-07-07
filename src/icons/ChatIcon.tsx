@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 export default function ChatIcon() {
   return (
@@ -10,5 +10,5 @@ export default function ChatIcon() {
         fill="#707578"
       />
     </svg>
-  );
+  )
 }

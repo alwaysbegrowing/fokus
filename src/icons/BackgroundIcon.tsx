@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 export default function BackgroundIcon() {
   return (
@@ -22,5 +22,5 @@ export default function BackgroundIcon() {
         fill="#606B85"
       />
     </svg>
-  );
+  )
 }

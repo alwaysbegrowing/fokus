@@ -1,6 +1,6 @@
-import React from 'react';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
-import CloseIcon from '../../../icons/CloseIcon';
+import React from 'react'
+import { makeStyles, createStyles } from '@material-ui/core/styles'
+import CloseIcon from '../../../icons/CloseIcon'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -24,14 +24,14 @@ const useStyles = makeStyles(() =>
       padding: '0.4em',
     },
   })
-);
+)
 
 interface BackgroundSelectionHeaderProps {
-  onClose: () => void;
+  onClose: () => void
 }
 
 export default function BackgroundSelectionHeader({ onClose }: BackgroundSelectionHeaderProps) {
-  const classes = useStyles();
+  const classes = useStyles()
   return (
     <div className={classes.container}>
       <div className={classes.text}>Backgrounds</div>
@@ -39,5 +39,5 @@ export default function BackgroundSelectionHeader({ onClose }: BackgroundSelecti
         <CloseIcon />
       </button>
     </div>
-  );
+  )
 }

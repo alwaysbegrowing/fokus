@@ -1,5 +1,5 @@
-import React from 'react';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import React from 'react'
+import { makeStyles, createStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -12,21 +12,21 @@ const useStyles = makeStyles(() =>
       color: '#606B85',
     },
   })
-);
+)
 
 interface MessageInfoProps {
-  author: string;
-  dateCreated: string;
-  isLocalParticipant: boolean;
+  author: string
+  dateCreated: string
+  isLocalParticipant: boolean
 }
 
 export default function MessageInfo({ author, dateCreated, isLocalParticipant }: MessageInfoProps) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <div className={classes.messageInfoContainer}>
       <div>{isLocalParticipant ? `${author} (You)` : author}</div>
       <div>{dateCreated}</div>
     </div>
-  );
+  )
 }

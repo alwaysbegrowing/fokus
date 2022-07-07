@@ -1,9 +1,9 @@
-import { Settings } from '../../state/settings/settingsReducer';
-import { useAppState } from '../../state';
-import useConnectionOptions from './useConnectionOptions';
+import { Settings } from '../../state/settings/settingsReducer'
+import { useAppState } from '../../state'
+import useConnectionOptions from './useConnectionOptions'
 
-const mockUseAppState = useAppState as jest.Mock<any>;
-jest.mock('../../state');
+const mockUseAppState = useAppState as jest.Mock<any>
+jest.mock('../../state')
 
 describe('the useConnectionOptions function', () => {
   it('should remove any undefined values from settings', () => {
@@ -14,7 +14,7 @@ describe('the useConnectionOptions function', () => {
       maxAudioBitrate: '',
       clientTrackSwitchOffControl: 'manual',
       contentPreferencesMode: 'auto',
-    };
+    }
 
     const result = {
       bandwidthProfile: {
@@ -27,11 +27,11 @@ describe('the useConnectionOptions function', () => {
       maxAudioBitrate: 0,
       networkQuality: { local: 1, remote: 1 },
       preferredVideoCodecs: 'auto',
-    };
+    }
 
-    mockUseAppState.mockImplementationOnce(() => ({ settings }));
-    expect(useConnectionOptions()).toEqual(result);
-  });
+    mockUseAppState.mockImplementationOnce(() => ({ settings }))
+    expect(useConnectionOptions()).toEqual(result)
+  })
 
   it('should correctly generate settings', () => {
     const settings: Settings = {
@@ -41,7 +41,7 @@ describe('the useConnectionOptions function', () => {
       maxAudioBitrate: '0',
       contentPreferencesMode: 'auto',
       clientTrackSwitchOffControl: 'manual',
-    };
+    }
 
     const result = {
       bandwidthProfile: {
@@ -57,9 +57,9 @@ describe('the useConnectionOptions function', () => {
       maxAudioBitrate: 0,
       networkQuality: { local: 1, remote: 1 },
       preferredVideoCodecs: 'auto',
-    };
+    }
 
-    mockUseAppState.mockImplementationOnce(() => ({ settings }));
-    expect(useConnectionOptions()).toEqual(result);
-  });
-});
+    mockUseAppState.mockImplementationOnce(() => ({ settings }))
+    expect(useConnectionOptions()).toEqual(result)
+  })
+})

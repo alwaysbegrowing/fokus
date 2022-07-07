@@ -1,16 +1,24 @@
-import React, { createContext, ReactNode, useCallback, useState } from 'react';
-import { CreateLocalTrackOptions, ConnectOptions, LocalAudioTrack, LocalVideoTrack, Room } from 'twilio-video';
-import { ErrorCallback } from '../../types';
-import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant';
+import React, { createContext, ReactNode, useCallback, useState } from 'react'
+import {
+  CreateLocalTrackOptions,
+  ConnectOptions,
+  LocalAudioTrack,
+  LocalVideoTrack,
+  Room,
+} from 'twilio-video'
+import { ErrorCallback } from '../../types'
+import { SelectedParticipantProvider } from './useSelectedParticipant/useSelectedParticipant'
 
-import AttachVisibilityHandler from './AttachVisibilityHandler/AttachVisibilityHandler';
-import useBackgroundSettings, { BackgroundSettings } from './useBackgroundSettings/useBackgroundSettings';
-import useHandleRoomDisconnection from './useHandleRoomDisconnection/useHandleRoomDisconnection';
-import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed/useHandleTrackPublicationFailed';
-import useLocalTracks from './useLocalTracks/useLocalTracks';
-import useRestartAudioTrackOnDeviceChange from './useRestartAudioTrackOnDeviceChange/useRestartAudioTrackOnDeviceChange';
-import useRoom from './useRoom/useRoom';
-import useScreenShareToggle from './useScreenShareToggle/useScreenShareToggle';
+import AttachVisibilityHandler from './AttachVisibilityHandler/AttachVisibilityHandler'
+import useBackgroundSettings, {
+  BackgroundSettings,
+} from './useBackgroundSettings/useBackgroundSettings'
+import useHandleRoomDisconnection from './useHandleRoomDisconnection/useHandleRoomDisconnection'
+import useHandleTrackPublicationFailed from './useHandleTrackPublicationFailed/useHandleTrackPublicationFailed'
+import useLocalTracks from './useLocalTracks/useLocalTracks'
+import useRestartAudioTrackOnDeviceChange from './useRestartAudioTrackOnDeviceChange/useRestartAudioTrackOnDeviceChange'
+import useRoom from './useRoom/useRoom'
+import useScreenShareToggle from './useScreenShareToggle/useScreenShareToggle'
 
 /*
  *  The hooks used by the VideoProvider component are different than the hooks found in the 'hooks/' directory. The hooks
@@ -20,40 +28,40 @@ import useScreenShareToggle from './useScreenShareToggle/useScreenShareToggle';
  */
 
 export interface IVideoContext {
-  room: Room | null;
-  localTracks: (LocalAudioTrack | LocalVideoTrack)[];
-  isConnecting: boolean;
-  connect: (token: string) => Promise<void>;
-  onError: ErrorCallback;
-  getLocalVideoTrack: (newOptions?: CreateLocalTrackOptions) => Promise<LocalVideoTrack>;
-  getLocalAudioTrack: (deviceId?: string) => Promise<LocalAudioTrack>;
-  isAcquiringLocalTracks: boolean;
-  removeLocalVideoTrack: () => void;
-  isSharingScreen: boolean;
-  toggleScreenShare: () => void;
-  getAudioAndVideoTracks: () => Promise<void>;
-  isBackgroundSelectionOpen: boolean;
-  setIsBackgroundSelectionOpen: (value: boolean) => void;
-  backgroundSettings: BackgroundSettings;
-  setBackgroundSettings: (settings: BackgroundSettings) => void;
+  room: Room | null
+  localTracks: (LocalAudioTrack | LocalVideoTrack)[]
+  isConnecting: boolean
+  connect: (token: string) => Promise<void>
+  onError: ErrorCallback
+  getLocalVideoTrack: (newOptions?: CreateLocalTrackOptions) => Promise<LocalVideoTrack>
+  getLocalAudioTrack: (deviceId?: string) => Promise<LocalAudioTrack>
+  isAcquiringLocalTracks: boolean
+  removeLocalVideoTrack: () => void
+  isSharingScreen: boolean
+  toggleScreenShare: () => void
+  getAudioAndVideoTracks: () => Promise<void>
+  isBackgroundSelectionOpen: boolean
+  setIsBackgroundSelectionOpen: (value: boolean) => void
+  backgroundSettings: BackgroundSettings
+  setBackgroundSettings: (settings: BackgroundSettings) => void
 }
 
-export const VideoContext = createContext<IVideoContext>(null!);
+export const VideoContext = createContext<IVideoContext>(null!)
 
 interface VideoProviderProps {
-  options?: ConnectOptions;
-  onError: ErrorCallback;
-  children: ReactNode;
+  options?: ConnectOptions
+  onError: ErrorCallback
+  children: ReactNode
 }
 
 export function VideoProvider({ options, children, onError = () => {} }: VideoProviderProps) {
   const onErrorCallback: ErrorCallback = useCallback(
-    error => {
-      console.log(`ERROR: ${error.message}`, error);
-      onError(error);
+    (error) => {
+      console.log(`ERROR: ${error.message}`, error)
+      onError(error)
     },
     [onError]
-  );
+  )
 
   const {
     localTracks,
@@ -63,10 +71,10 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
     removeLocalAudioTrack,
     removeLocalVideoTrack,
     getAudioAndVideoTracks,
-  } = useLocalTracks();
-  const { room, isConnecting, connect } = useRoom(localTracks, onErrorCallback, options);
+  } = useLocalTracks()
+  const { room, isConnecting, connect } = useRoom(localTracks, onErrorCallback, options)
 
-  const [isSharingScreen, toggleScreenShare] = useScreenShareToggle(room, onError);
+  const [isSharingScreen, toggleScreenShare] = useScreenShareToggle(room, onError)
 
   // Register callback functions to be called on room disconnect.
   useHandleRoomDisconnection(
@@ -76,15 +84,15 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
     removeLocalVideoTrack,
     isSharingScreen,
     toggleScreenShare
-  );
-  useHandleTrackPublicationFailed(room, onError);
-  useRestartAudioTrackOnDeviceChange(localTracks);
+  )
+  useHandleTrackPublicationFailed(room, onError)
+  useRestartAudioTrackOnDeviceChange(localTracks)
 
-  const [isBackgroundSelectionOpen, setIsBackgroundSelectionOpen] = useState(false);
-  const videoTrack = localTracks.find(track => !track.name.includes('screen') && track.kind === 'video') as
-    | LocalVideoTrack
-    | undefined;
-  const [backgroundSettings, setBackgroundSettings] = useBackgroundSettings(videoTrack, room);
+  const [isBackgroundSelectionOpen, setIsBackgroundSelectionOpen] = useState(false)
+  const videoTrack = localTracks.find(
+    (track) => !track.name.includes('screen') && track.kind === 'video'
+  ) as LocalVideoTrack | undefined
+  const [backgroundSettings, setBackgroundSettings] = useBackgroundSettings(videoTrack, room)
 
   return (
     <VideoContext.Provider
@@ -114,5 +122,5 @@ export function VideoProvider({ options, children, onError = () => {} }: VideoPr
       */}
       <AttachVisibilityHandler />
     </VideoContext.Provider>
-  );
+  )
 }

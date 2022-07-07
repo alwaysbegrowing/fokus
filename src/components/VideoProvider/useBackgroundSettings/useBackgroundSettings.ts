@@ -1,43 +1,43 @@
-import { LocalVideoTrack, Room } from 'twilio-video';
-import { useState, useEffect, useCallback } from 'react';
-import { SELECTED_BACKGROUND_SETTINGS_KEY } from '../../../constants';
-import Abstract from '../../../images/Abstract.jpg';
-import AbstractThumb from '../../../images/thumb/Abstract.jpg';
-import BohoHome from '../../../images/BohoHome.jpg';
-import BohoHomeThumb from '../../../images/thumb/BohoHome.jpg';
-import Bookshelf from '../../../images/Bookshelf.jpg';
-import BookshelfThumb from '../../../images/thumb/Bookshelf.jpg';
-import CoffeeShop from '../../../images/CoffeeShop.jpg';
-import CoffeeShopThumb from '../../../images/thumb/CoffeeShop.jpg';
-import Contemporary from '../../../images/Contemporary.jpg';
-import ContemporaryThumb from '../../../images/thumb/Contemporary.jpg';
-import CozyHome from '../../../images/CozyHome.jpg';
-import CozyHomeThumb from '../../../images/thumb/CozyHome.jpg';
-import Desert from '../../../images/Desert.jpg';
-import DesertThumb from '../../../images/thumb/Desert.jpg';
-import Fishing from '../../../images/Fishing.jpg';
-import FishingThumb from '../../../images/thumb/Fishing.jpg';
-import Flower from '../../../images/Flower.jpg';
-import FlowerThumb from '../../../images/thumb/Flower.jpg';
-import Kitchen from '../../../images/Kitchen.jpg';
-import KitchenThumb from '../../../images/thumb/Kitchen.jpg';
-import ModernHome from '../../../images/ModernHome.jpg';
-import ModernHomeThumb from '../../../images/thumb/ModernHome.jpg';
-import Nature from '../../../images/Nature.jpg';
-import NatureThumb from '../../../images/thumb/Nature.jpg';
-import Ocean from '../../../images/Ocean.jpg';
-import OceanThumb from '../../../images/thumb/Ocean.jpg';
-import Patio from '../../../images/Patio.jpg';
-import PatioThumb from '../../../images/thumb/Patio.jpg';
-import Plant from '../../../images/Plant.jpg';
-import PlantThumb from '../../../images/thumb/Plant.jpg';
-import SanFrancisco from '../../../images/SanFrancisco.jpg';
-import SanFranciscoThumb from '../../../images/thumb/SanFrancisco.jpg';
-import { Thumbnail } from '../../BackgroundSelectionDialog/BackgroundThumbnail/BackgroundThumbnail';
+import { LocalVideoTrack, Room } from 'twilio-video'
+import { useState, useEffect, useCallback } from 'react'
+import { SELECTED_BACKGROUND_SETTINGS_KEY } from '../../../constants'
+import Abstract from '../../../images/Abstract.jpg'
+import AbstractThumb from '../../../images/thumb/Abstract.jpg'
+import BohoHome from '../../../images/BohoHome.jpg'
+import BohoHomeThumb from '../../../images/thumb/BohoHome.jpg'
+import Bookshelf from '../../../images/Bookshelf.jpg'
+import BookshelfThumb from '../../../images/thumb/Bookshelf.jpg'
+import CoffeeShop from '../../../images/CoffeeShop.jpg'
+import CoffeeShopThumb from '../../../images/thumb/CoffeeShop.jpg'
+import Contemporary from '../../../images/Contemporary.jpg'
+import ContemporaryThumb from '../../../images/thumb/Contemporary.jpg'
+import CozyHome from '../../../images/CozyHome.jpg'
+import CozyHomeThumb from '../../../images/thumb/CozyHome.jpg'
+import Desert from '../../../images/Desert.jpg'
+import DesertThumb from '../../../images/thumb/Desert.jpg'
+import Fishing from '../../../images/Fishing.jpg'
+import FishingThumb from '../../../images/thumb/Fishing.jpg'
+import Flower from '../../../images/Flower.jpg'
+import FlowerThumb from '../../../images/thumb/Flower.jpg'
+import Kitchen from '../../../images/Kitchen.jpg'
+import KitchenThumb from '../../../images/thumb/Kitchen.jpg'
+import ModernHome from '../../../images/ModernHome.jpg'
+import ModernHomeThumb from '../../../images/thumb/ModernHome.jpg'
+import Nature from '../../../images/Nature.jpg'
+import NatureThumb from '../../../images/thumb/Nature.jpg'
+import Ocean from '../../../images/Ocean.jpg'
+import OceanThumb from '../../../images/thumb/Ocean.jpg'
+import Patio from '../../../images/Patio.jpg'
+import PatioThumb from '../../../images/thumb/Patio.jpg'
+import Plant from '../../../images/Plant.jpg'
+import PlantThumb from '../../../images/thumb/Plant.jpg'
+import SanFrancisco from '../../../images/SanFrancisco.jpg'
+import SanFranciscoThumb from '../../../images/thumb/SanFrancisco.jpg'
+import { Thumbnail } from '../../BackgroundSelectionDialog/BackgroundThumbnail/BackgroundThumbnail'
 
 export interface BackgroundSettings {
-  type: Thumbnail;
-  index?: number;
+  type: Thumbnail
+  index?: number
 }
 
 const imageNames: string[] = [
@@ -57,7 +57,7 @@ const imageNames: string[] = [
   'Patio',
   'Plant',
   'San Francisco',
-];
+]
 
 const images = [
   AbstractThumb,
@@ -76,7 +76,7 @@ const images = [
   PatioThumb,
   PlantThumb,
   SanFranciscoThumb,
-];
+]
 
 const rawImagePaths = [
   Abstract,
@@ -95,45 +95,48 @@ const rawImagePaths = [
   Patio,
   Plant,
   SanFrancisco,
-];
+]
 
-let imageElements = new Map();
+let imageElements = new Map()
 
 const getImage = (index: number): Promise<HTMLImageElement> => {
   return new Promise((resolve, reject) => {
     if (imageElements.has(index)) {
-      return resolve(imageElements.get(index));
+      return resolve(imageElements.get(index))
     }
-    const img = new Image();
+    const img = new Image()
     img.onload = () => {
-      imageElements.set(index, img);
-      resolve(img);
-    };
-    img.onerror = reject;
-    img.src = rawImagePaths[index];
-  });
-};
+      imageElements.set(index, img)
+      resolve(img)
+    }
+    img.onerror = reject
+    img.src = rawImagePaths[index]
+  })
+}
 
 export const backgroundConfig = {
   imageNames,
   images,
-};
+}
 
-const virtualBackgroundAssets = '/virtualbackground';
-let blurProcessor: any;
-let virtualBackgroundProcessor: any;
+const virtualBackgroundAssets = '/virtualbackground'
+let blurProcessor: any
+let virtualBackgroundProcessor: any
 
-export default function useBackgroundSettings(videoTrack: LocalVideoTrack | undefined, room?: Room | null) {
+export default function useBackgroundSettings(
+  videoTrack: LocalVideoTrack | undefined,
+  room?: Room | null
+) {
   const [backgroundSettings, setBackgroundSettings] = useState<BackgroundSettings>(() => {
-    const localStorageSettings = window.localStorage.getItem(SELECTED_BACKGROUND_SETTINGS_KEY);
-    return localStorageSettings ? JSON.parse(localStorageSettings) : { type: 'none', index: 0 };
-  });
+    const localStorageSettings = window.localStorage.getItem(SELECTED_BACKGROUND_SETTINGS_KEY)
+    return localStorageSettings ? JSON.parse(localStorageSettings) : { type: 'none', index: 0 }
+  })
 
   const removeProcessor = useCallback(() => {
     if (videoTrack && videoTrack.processor) {
-      videoTrack.removeProcessor(videoTrack.processor);
+      videoTrack.removeProcessor(videoTrack.processor)
     }
-  }, [videoTrack]);
+  }, [videoTrack])
 
   // const addProcessor = useCallback(
   //   (processor: GaussianBlurBackgroundProcessor | VirtualBackgroundProcessor) => {
@@ -148,7 +151,7 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
 
   useEffect(() => {
     if (!true) {
-      return;
+      return
     }
     // make sure localParticipant has joined room before applying video processors
     // this ensures that the video processors are not applied on the LocalVideoPreview
@@ -168,21 +171,27 @@ export default function useBackgroundSettings(videoTrack: LocalVideoTrack | unde
         // await virtualBackgroundProcessor.loadModel();
       }
       if (!room?.localParticipant) {
-        return;
+        return
       }
 
       if (backgroundSettings.type === 'blur') {
         //addProcessor(blurProcessor);
-      } else if (backgroundSettings.type === 'image' && typeof backgroundSettings.index === 'number') {
-        virtualBackgroundProcessor.backgroundImage = await getImage(backgroundSettings.index);
+      } else if (
+        backgroundSettings.type === 'image' &&
+        typeof backgroundSettings.index === 'number'
+      ) {
+        virtualBackgroundProcessor.backgroundImage = await getImage(backgroundSettings.index)
         //addProcessor(virtualBackgroundProcessor);
       } else {
-        removeProcessor();
+        removeProcessor()
       }
-    };
-    handleProcessorChange();
-    window.localStorage.setItem(SELECTED_BACKGROUND_SETTINGS_KEY, JSON.stringify(backgroundSettings));
-  }, [backgroundSettings, videoTrack, room, removeProcessor]);
+    }
+    handleProcessorChange()
+    window.localStorage.setItem(
+      SELECTED_BACKGROUND_SETTINGS_KEY,
+      JSON.stringify(backgroundSettings)
+    )
+  }, [backgroundSettings, videoTrack, room, removeProcessor])
 
-  return [backgroundSettings, setBackgroundSettings] as const;
+  return [backgroundSettings, setBackgroundSettings] as const
 }

@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import Button from '@material-ui/core/Button';
-import ChatIcon from '../../../icons/ChatIcon';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core';
-import useChatContext from '../../../hooks/useChatContext/useChatContext';
-import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import React, { useEffect, useState } from 'react'
+import Button from '@material-ui/core/Button'
+import ChatIcon from '../../../icons/ChatIcon'
+import clsx from 'clsx'
+import { makeStyles } from '@material-ui/core'
+import useChatContext from '../../../hooks/useChatContext/useChatContext'
+import useVideoContext from '../../../hooks/useVideoContext/useVideoContext'
 
-export const ANIMATION_DURATION = 700;
+export const ANIMATION_DURATION = 700
 
 const useStyles = makeStyles({
   iconContainer: {
@@ -54,34 +54,35 @@ const useStyles = makeStyles({
       opacity: 0,
     },
   },
-});
+})
 
 export default function ToggleChatButton() {
-  const classes = useStyles();
-  const [shouldAnimate, setShouldAnimate] = useState(false);
-  const { isChatWindowOpen, setIsChatWindowOpen, conversation, hasUnreadMessages } = useChatContext();
-  const { setIsBackgroundSelectionOpen } = useVideoContext();
+  const classes = useStyles()
+  const [shouldAnimate, setShouldAnimate] = useState(false)
+  const { isChatWindowOpen, setIsChatWindowOpen, conversation, hasUnreadMessages } =
+    useChatContext()
+  const { setIsBackgroundSelectionOpen } = useVideoContext()
 
   const toggleChatWindow = () => {
-    setIsChatWindowOpen(!isChatWindowOpen);
-    setIsBackgroundSelectionOpen(false);
-  };
+    setIsChatWindowOpen(!isChatWindowOpen)
+    setIsBackgroundSelectionOpen(false)
+  }
 
   useEffect(() => {
     if (shouldAnimate) {
-      setTimeout(() => setShouldAnimate(false), ANIMATION_DURATION);
+      setTimeout(() => setShouldAnimate(false), ANIMATION_DURATION)
     }
-  }, [shouldAnimate]);
+  }, [shouldAnimate])
 
   useEffect(() => {
     if (conversation && !isChatWindowOpen) {
-      const handleNewMessage = () => setShouldAnimate(true);
-      conversation.on('messageAdded', handleNewMessage);
+      const handleNewMessage = () => setShouldAnimate(true)
+      conversation.on('messageAdded', handleNewMessage)
       return () => {
-        conversation.off('messageAdded', handleNewMessage);
-      };
+        conversation.off('messageAdded', handleNewMessage)
+      }
     }
-  }, [conversation, isChatWindowOpen]);
+  }, [conversation, isChatWindowOpen])
 
   return (
     <Button
@@ -92,11 +93,13 @@ export default function ToggleChatButton() {
         <div className={classes.iconContainer}>
           <ChatIcon />
           <div className={clsx(classes.ring, { [classes.animateRing]: shouldAnimate })} />
-          <div className={clsx(classes.circle, { [classes.hasUnreadMessages]: hasUnreadMessages })} />
+          <div
+            className={clsx(classes.circle, { [classes.hasUnreadMessages]: hasUnreadMessages })}
+          />
         </div>
       }
     >
       Chat
     </Button>
-  );
+  )
 }

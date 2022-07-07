@@ -1,7 +1,7 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { Participant } from 'twilio-video';
-import useParticipantNetworkQualityLevel from '../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel';
+import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import { Participant } from 'twilio-video'
+import useParticipantNetworkQualityLevel from '../../hooks/useParticipantNetworkQualityLevel/useParticipantNetworkQualityLevel'
 
 const useStyles = makeStyles({
   outerContainer: {
@@ -24,21 +24,21 @@ const useStyles = makeStyles({
       },
     },
   },
-});
+})
 
-const STEP = 3;
-const BARS_ARRAY = [0, 1, 2, 3, 4];
+const STEP = 3
+const BARS_ARRAY = [0, 1, 2, 3, 4]
 
 export default function NetworkQualityLevel({ participant }: { participant: Participant }) {
-  const classes = useStyles();
-  const networkQualityLevel = useParticipantNetworkQualityLevel(participant);
+  const classes = useStyles()
+  const networkQualityLevel = useParticipantNetworkQualityLevel(participant)
 
-  if (networkQualityLevel === null) return null;
+  if (networkQualityLevel === null) return null
 
   return (
     <div className={classes.outerContainer}>
       <div className={classes.innerContainer}>
-        {BARS_ARRAY.map(level => (
+        {BARS_ARRAY.map((level) => (
           <div
             key={level}
             style={{
@@ -49,5 +49,5 @@ export default function NetworkQualityLevel({ participant }: { participant: Part
         ))}
       </div>
     </div>
-  );
+  )
 }

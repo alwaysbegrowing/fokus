@@ -1,33 +1,33 @@
-import { createTheme } from '@material-ui/core';
+import { createTheme } from '@material-ui/core'
 
 declare module '@material-ui/core/styles/createTheme' {
   interface Theme {
-    sidebarWidth: number;
-    sidebarMobileHeight: number;
-    brand: string;
-    footerHeight: number;
-    mobileTopBarHeight: number;
-    mobileFooterHeight: number;
-    sidebarMobilePadding: number;
-    participantBorderWidth: number;
-    rightDrawerWidth: number;
+    sidebarWidth: number
+    sidebarMobileHeight: number
+    brand: string
+    footerHeight: number
+    mobileTopBarHeight: number
+    mobileFooterHeight: number
+    sidebarMobilePadding: number
+    participantBorderWidth: number
+    rightDrawerWidth: number
   }
 
   // allow configuration using `createMuiTheme`
   interface ThemeOptions {
-    sidebarWidth?: number;
-    sidebarMobileHeight?: number;
-    brand: string;
-    footerHeight: number;
-    mobileTopBarHeight: number;
-    mobileFooterHeight: number;
-    sidebarMobilePadding: number;
-    participantBorderWidth: number;
-    rightDrawerWidth?: number;
+    sidebarWidth?: number
+    sidebarMobileHeight?: number
+    brand: string
+    footerHeight: number
+    mobileTopBarHeight: number
+    mobileFooterHeight: number
+    sidebarMobilePadding: number
+    participantBorderWidth: number
+    rightDrawerWidth?: number
   }
 }
 
-const defaultTheme = createTheme();
+const defaultTheme = createTheme()
 
 export default createTheme({
   overrides: {
@@ -44,9 +44,12 @@ export default createTheme({
         textTransform: 'none',
         color: 'rgb(40, 42, 43)',
         fontSize: '0.9rem',
-        transition: defaultTheme.transitions.create(['background-color', 'box-shadow', 'border', 'color'], {
-          duration: defaultTheme.transitions.duration.short,
-        }),
+        transition: defaultTheme.transitions.create(
+          ['background-color', 'box-shadow', 'border', 'color'],
+          {
+            duration: defaultTheme.transitions.duration.short,
+          }
+        ),
       },
       text: {
         padding: '6px 14px',
@@ -124,4 +127,4 @@ export default createTheme({
   participantBorderWidth: 2,
   mobileTopBarHeight: 52,
   rightDrawerWidth: 320,
-});
+})
