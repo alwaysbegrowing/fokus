@@ -8,9 +8,7 @@ import {
   SettingsAction,
 } from './settings/settingsReducer'
 import useActiveSinkId from './useActiveSinkId/useActiveSinkId'
-import useFirebaseAuth from './useFirebaseAuth/useFirebaseAuth'
 import usePasscodeAuth from './usePasscodeAuth/usePasscodeAuth'
-import { User } from 'firebase'
 
 export interface StateContextType {
   error: TwilioError | Error | null
@@ -62,12 +60,7 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
     roomType,
   } as StateContextType
 
-  if (process.env.REACT_APP_SET_AUTH === 'firebase') {
-    contextValue = {
-      ...contextValue,
-      ...useFirebaseAuth(), // eslint-disable-line react-hooks/rules-of-hooks
-    }
-  } else if (process.env.REACT_APP_SET_AUTH === 'passcode') {
+  if (process.env.REACT_APP_SET_AUTH === 'passcode') {
     contextValue = {
       ...contextValue,
       ...usePasscodeAuth(), // eslint-disable-line react-hooks/rules-of-hooks

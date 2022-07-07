@@ -48,40 +48,6 @@ const UserMenu: React.FC = () => {
     )
   }
 
-  if (process.env.REACT_APP_SET_AUTH === 'firebase') {
-    return (
-      <div className={classes.userContainer}>
-        <UserAvatar user={user} />
-        <Button
-          onClick={() => setMenuOpen((isOpen) => !isOpen)}
-          ref={anchorRef}
-          className={classes.userButton}
-        >
-          {user!.displayName}
-          <ExpandMoreIcon />
-        </Button>
-        <Menu
-          open={menuOpen}
-          onClose={() => setMenuOpen((isOpen) => !isOpen)}
-          anchorEl={anchorRef.current}
-          getContentAnchorEl={null}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
-          }}
-        >
-          <MenuItem onClick={handleSignOut}>
-            <Typography variant="body1">Logout</Typography>
-          </MenuItem>
-        </Menu>
-      </div>
-    )
-  }
-
   return null
 }
 
