@@ -34,6 +34,11 @@ import PlantThumb from '../../../images/thumb/Plant.jpg'
 import SanFrancisco from '../../../images/SanFrancisco.jpg'
 import SanFranciscoThumb from '../../../images/thumb/SanFrancisco.jpg'
 import { Thumbnail } from '../../BackgroundSelectionDialog/BackgroundThumbnail/BackgroundThumbnail'
+import {
+  GaussianBlurBackgroundProcessor,
+  ImageFit,
+  VirtualBackgroundProcessor,
+} from '@twilio/video-processors'
 
 export interface BackgroundSettings {
   type: Thumbnail
@@ -110,7 +115,7 @@ const getImage = (index: number): Promise<HTMLImageElement> => {
       resolve(img)
     }
     img.onerror = reject
-    img.src = rawImagePaths[index]
+    img.src = rawImagePaths[index].src
   })
 }
 
@@ -138,16 +143,16 @@ export default function useBackgroundSettings(
     }
   }, [videoTrack])
 
-  // const addProcessor = useCallback(
-  //   (processor: GaussianBlurBackgroundProcessor | VirtualBackgroundProcessor) => {
-  //     if (!videoTrack || videoTrack.processor === processor) {
-  //       return;
-  //     }
-  //     removeProcessor();
-  //     videoTrack.addProcessor(processor);
-  //   },
-  //   [videoTrack, removeProcessor]
-  // );
+  const addProcessor = useCallback(
+    (processor: GaussianBlurBackgroundProcessor | VirtualBackgroundProcessor) => {
+      if (!videoTrack || videoTrack.processor === processor) {
+        return
+      }
+      removeProcessor()
+      videoTrack.addProcessor(processor)
+    },
+    [videoTrack, removeProcessor]
+  )
 
   useEffect(() => {
     if (!true) {
@@ -157,18 +162,18 @@ export default function useBackgroundSettings(
     // this ensures that the video processors are not applied on the LocalVideoPreview
     const handleProcessorChange = async () => {
       if (!blurProcessor) {
-        // blurProcessor = new GaussianBlurBackgroundProcessor({
-        //   assetsPath: virtualBackgroundAssets,
-        // });
-        // await blurProcessor.loadModel();
+        blurProcessor = new GaussianBlurBackgroundProcessor({
+          assetsPath: virtualBackgroundAssets,
+        })
+        await blurProcessor.loadModel()
       }
       if (!virtualBackgroundProcessor) {
-        // virtualBackgroundProcessor = new VirtualBackgroundProcessor({
-        //   assetsPath: virtualBackgroundAssets,
-        //   backgroundImage: await getImage(0),
-        //   fitType: ImageFit.Cover,
-        // });
-        // await virtualBackgroundProcessor.loadModel();
+        virtualBackgroundProcessor = new VirtualBackgroundProcessor({
+          assetsPath: virtualBackgroundAssets,
+          backgroundImage: await getImage(0),
+          fitType: ImageFit.Cover,
+        })
+        await virtualBackgroundProcessor.loadModel()
       }
       if (!room?.localParticipant) {
         return
@@ -181,7 +186,7 @@ export default function useBackgroundSettings(
         typeof backgroundSettings.index === 'number'
       ) {
         virtualBackgroundProcessor.backgroundImage = await getImage(backgroundSettings.index)
-        //addProcessor(virtualBackgroundProcessor);
+        addProcessor(virtualBackgroundProcessor)
       } else {
         removeProcessor()
       }
