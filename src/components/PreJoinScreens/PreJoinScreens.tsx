@@ -4,7 +4,6 @@ import IntroContainer from '../IntroContainer/IntroContainer';
 import MediaErrorSnackbar from './MediaErrorSnackbar/MediaErrorSnackbar';
 import RoomNameScreen from './RoomNameScreen/RoomNameScreen';
 import { useAppState } from '../../state';
-import { useParams } from 'react-router-dom';
 import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
 
 export enum Steps {
@@ -15,7 +14,7 @@ export enum Steps {
 export default function PreJoinScreens() {
   const { user } = useAppState();
   const { getAudioAndVideoTracks } = useVideoContext();
-  const { URLRoomName } = useParams();
+  const { URLRoomName } = { URLRoomName: 'test' };
   const [step, setStep] = useState(Steps.roomNameStep);
 
   const [name, setName] = useState<string>(user?.displayName || '');

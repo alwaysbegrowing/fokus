@@ -1,5 +1,5 @@
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 
 const endpoint = process.env.REACT_APP_TOKEN_ENDPOINT || '/token';
 
@@ -58,7 +58,7 @@ export function getErrorMessage(message: string) {
 }
 
 export default function usePasscodeAuth() {
-  const history = useHistory();
+  const { replace } = useRouter();
 
   const [user, setUser] = useState<{ displayName: undefined; photoURL: undefined; passcode: string } | null>(null);
   const [isAuthReady, setIsAuthReady] = useState(false);
@@ -112,7 +112,7 @@ export default function usePasscodeAuth() {
           if (verification?.isValid) {
             setUser({ passcode } as any);
             window.sessionStorage.setItem('passcode', passcode);
-            history.replace(window.location.pathname);
+            replace(window.location.pathname);
           }
         })
         .then(() => setIsAuthReady(true));

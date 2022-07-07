@@ -28,7 +28,7 @@ const VideoApp = (props) => {
     );
 };
 
-function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }: AppProps) {
     return (
         <MuiThemeProvider theme={theme}>
             <CssBaseline />

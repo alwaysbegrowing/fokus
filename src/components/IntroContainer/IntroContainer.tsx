@@ -5,7 +5,7 @@ import VideoLogo from './VideoLogo';
 import TwilioLogo from './TwilioLogo';
 import { useAppState } from '../../state';
 import UserMenu from './UserMenu/UserMenu';
-import { useLocation } from 'react-router-dom';
+import { useRouter } from 'next/router';
 
 const useStyles = makeStyles((theme: Theme) => ({
   background: {
@@ -96,7 +96,7 @@ interface IntroContainerProps {
 const IntroContainer = (props: IntroContainerProps) => {
   const classes = useStyles();
   const { user } = useAppState();
-  const location = useLocation();
+  const { location } = useRouter();
 
   return (
     <div className={classes.background}>

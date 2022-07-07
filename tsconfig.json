@@ -21,7 +21,8 @@
     "noImplicitAny": true,
     "noImplicitThis": true,
     "strictNullChecks": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "incremental": true
   },
   "include": [
     "src",

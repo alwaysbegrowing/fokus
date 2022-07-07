@@ -7,8 +7,11 @@ import useMediaStreamTrack from '../../hooks/useMediaStreamTrack/useMediaStreamT
 let clipId = 0;
 const getUniqueClipId = () => clipId++;
 
-// @ts-ignore
-const AudioContext = window.AudioContext || window.webkitAudioContext;
+let AudioContext: typeof window.AudioContext;
+if (typeof window !== 'undefined') {
+  // @ts-ignore
+  AudioContext = window.AudioContext || window.webkitAudioContext;
+}
 
 export function initializeAnalyser(stream: MediaStream) {
   const audioContext = new AudioContext(); // Create a new audioContext for each audio indicator
@@ -31,7 +34,10 @@ export function initializeAnalyser(stream: MediaStream) {
   return analyser;
 }
 
-const isIOS = /iPhone|iPad/.test(navigator.userAgent);
+let isIOS = false;
+if (typeof navigator !== 'undefined') {
+  isIOS = /iPhone|iPad/.test(navigator.userAgent);
+}
 
 function AudioLevelIndicator({ audioTrack, color = 'white' }: { audioTrack?: AudioTrack; color?: string }) {
   const SVGRectRef = useRef<SVGRectElement>(null);
