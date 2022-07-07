@@ -52,7 +52,6 @@ export default async function handler(
         }
     }
 
-
     try {
         await conversationsClient.conversations(room.sid).participants.create({ identity });
     } catch (e) {
