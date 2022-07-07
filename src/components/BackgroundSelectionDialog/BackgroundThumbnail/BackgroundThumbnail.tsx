@@ -1,17 +1,17 @@
-import React from 'react';
-import clsx from 'clsx';
-import BlurIcon from '@material-ui/icons/BlurOnOutlined';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import NoneIcon from '@material-ui/icons/NotInterestedOutlined';
-import useVideoContext from '../../../hooks/useVideoContext/useVideoContext';
+import React from 'react'
+import clsx from 'clsx'
+import BlurIcon from '@material-ui/icons/BlurOnOutlined'
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles'
+import NoneIcon from '@material-ui/icons/NotInterestedOutlined'
+import useVideoContext from '../../../hooks/useVideoContext/useVideoContext'
 
-export type Thumbnail = 'none' | 'blur' | 'image';
+export type Thumbnail = 'none' | 'blur' | 'image'
 
 interface BackgroundThumbnailProps {
-  thumbnail: Thumbnail;
-  imagePath?: string;
-  name?: string;
-  index?: number;
+  thumbnail: Thumbnail
+  imagePath?: string
+  name?: string
+  index?: number
 }
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -93,21 +93,26 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
   })
-);
+)
 
-export default function BackgroundThumbnail({ thumbnail, imagePath, name, index }: BackgroundThumbnailProps) {
-  const classes = useStyles();
-  const { backgroundSettings, setBackgroundSettings } = useVideoContext();
-  const isImage = thumbnail === 'image';
+export default function BackgroundThumbnail({
+  thumbnail,
+  imagePath,
+  name,
+  index,
+}: BackgroundThumbnailProps) {
+  const classes = useStyles()
+  const { backgroundSettings, setBackgroundSettings } = useVideoContext()
+  const isImage = thumbnail === 'image'
   const thumbnailSelected = isImage
     ? backgroundSettings.index === index && backgroundSettings.type === 'image'
-    : backgroundSettings.type === thumbnail;
+    : backgroundSettings.type === thumbnail
   const icons = {
     none: NoneIcon,
     blur: BlurIcon,
     image: null,
-  };
-  const ThumbnailIcon = icons[thumbnail];
+  }
+  const ThumbnailIcon = icons[thumbnail]
 
   return (
     <div
@@ -124,9 +129,13 @@ export default function BackgroundThumbnail({ thumbnail, imagePath, name, index 
           <ThumbnailIcon className={classes.thumbIcon} />
         </div>
       ) : (
-        <img className={clsx(classes.thumbImage, { selected: thumbnailSelected })} src={imagePath} alt={name} />
+        <img
+          className={clsx(classes.thumbImage, { selected: thumbnailSelected })}
+          src={imagePath}
+          alt={name}
+        />
       )}
       <div className={classes.thumbOverlay}>{name}</div>
     </div>
-  );
+  )
 }

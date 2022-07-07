@@ -1,31 +1,15 @@
-import React from 'react';
-import { Redirect, Route, RouteProps } from 'react-router-dom';
-import { useAppState } from '../../state';
+import React from 'react'
+import { useAppState } from '../../state'
 
-export default function PrivateRoute({ children, ...rest }: RouteProps) {
-  const { isAuthReady, user } = useAppState();
-    
-  const renderChildren = user || !process.env.REACT_APP_SET_AUTH;
+export default function PrivateRoute({ children, ...rest }) {
+  const { isAuthReady, user } = useAppState()
+
+  const renderChildren = user || !process.env.REACT_APP_SET_AUTH
 
   if (!renderChildren && !isAuthReady) {
-    return null;
+    return null
   }
+  console.log('warning: i messed up this thing')
 
-  return (
-    <Route
-      {...rest}
-      render={({ location }) =>
-        renderChildren ? (
-          children
-        ) : (
-          <Redirect
-            to={{
-              pathname: '/login',
-              state: { from: location },
-            }}
-          />
-        )
-      }
-    />
-  );
+  return children
 }

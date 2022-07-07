@@ -1,19 +1,25 @@
-import React from 'react';
-import clsx from 'clsx';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { LocalAudioTrack, LocalVideoTrack, Participant, RemoteAudioTrack, RemoteVideoTrack } from 'twilio-video';
+import React from 'react'
+import clsx from 'clsx'
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles'
+import {
+  LocalAudioTrack,
+  LocalVideoTrack,
+  Participant,
+  RemoteAudioTrack,
+  RemoteVideoTrack,
+} from 'twilio-video'
 
-import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator';
-import AvatarIcon from '../../icons/AvatarIcon';
-import NetworkQualityLevel from '../NetworkQualityLevel/NetworkQualityLevel';
-import PinIcon from './PinIcon/PinIcon';
-import ScreenShareIcon from '../../icons/ScreenShareIcon';
-import Typography from '@material-ui/core/Typography';
+import AudioLevelIndicator from '../AudioLevelIndicator/AudioLevelIndicator'
+import AvatarIcon from '../../icons/AvatarIcon'
+import NetworkQualityLevel from '../NetworkQualityLevel/NetworkQualityLevel'
+import PinIcon from './PinIcon/PinIcon'
+import ScreenShareIcon from '../../icons/ScreenShareIcon'
+import Typography from '@material-ui/core/Typography'
 
-import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff';
-import usePublications from '../../hooks/usePublications/usePublications';
-import useTrack from '../../hooks/useTrack/useTrack';
-import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting';
+import useIsTrackSwitchedOff from '../../hooks/useIsTrackSwitchedOff/useIsTrackSwitchedOff'
+import usePublications from '../../hooks/usePublications/usePublications'
+import useTrack from '../../hooks/useTrack/useTrack'
+import useParticipantIsReconnecting from '../../hooks/useParticipantIsReconnecting/useParticipantIsReconnecting'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -125,15 +131,15 @@ const useStyles = makeStyles((theme: Theme) =>
       cursor: 'pointer',
     },
   })
-);
+)
 
 interface ParticipantInfoProps {
-  participant: Participant;
-  children: React.ReactNode;
-  onClick?: () => void;
-  isSelected?: boolean;
-  isLocalParticipant?: boolean;
-  hideParticipant?: boolean;
+  participant: Participant
+  children: React.ReactNode
+  onClick?: () => void
+  isSelected?: boolean
+  isLocalParticipant?: boolean
+  hideParticipant?: boolean
 }
 
 export default function ParticipantInfo({
@@ -144,21 +150,23 @@ export default function ParticipantInfo({
   isLocalParticipant,
   hideParticipant,
 }: ParticipantInfoProps) {
-  const publications = usePublications(participant);
+  const publications = usePublications(participant)
 
-  const audioPublication = publications.find(p => p.kind === 'audio');
-  const videoPublication = publications.find(p => !p.trackName.includes('screen') && p.kind === 'video');
+  const audioPublication = publications.find((p) => p.kind === 'audio')
+  const videoPublication = publications.find(
+    (p) => !p.trackName.includes('screen') && p.kind === 'video'
+  )
 
-  const isVideoEnabled = Boolean(videoPublication);
-  const isScreenShareEnabled = publications.find(p => p.trackName.includes('screen'));
+  const isVideoEnabled = Boolean(videoPublication)
+  const isScreenShareEnabled = publications.find((p) => p.trackName.includes('screen'))
 
-  const videoTrack = useTrack(videoPublication);
-  const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack);
+  const videoTrack = useTrack(videoPublication)
+  const isVideoSwitchedOff = useIsTrackSwitchedOff(videoTrack as LocalVideoTrack | RemoteVideoTrack)
 
-  const audioTrack = useTrack(audioPublication) as LocalAudioTrack | RemoteAudioTrack | undefined;
-  const isParticipantReconnecting = useParticipantIsReconnecting(participant);
+  const audioTrack = useTrack(audioPublication) as LocalAudioTrack | RemoteAudioTrack | undefined
+  const isParticipantReconnecting = useParticipantIsReconnecting(participant)
 
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <div
@@ -203,5 +211,5 @@ export default function ParticipantInfo({
         {children}
       </div>
     </div>
-  );
+  )
 }

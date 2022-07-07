@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback } from 'react'
 import {
   Button,
   Dialog,
@@ -14,11 +14,11 @@ import {
   TextField,
   Theme,
   Typography,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { inputLabels, Settings } from '../../state/settings/settingsReducer';
-import { useAppState } from '../../state';
-import useRoomState from '../../hooks/useRoomState/useRoomState';
+} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { inputLabels, Settings } from '../../state/settings/settingsReducer'
+import { useAppState } from '../../state'
+import useRoomState from '../../hooks/useRoomState/useRoomState'
 
 const useStyles = makeStyles((theme: Theme) => ({
   container: {
@@ -49,29 +49,35 @@ const useStyles = makeStyles((theme: Theme) => ({
   label: {
     width: '133%', // Labels have scale(0.75) applied to them, so this effectively makes the width 100%
   },
-}));
+}))
 
-const withDefault = (val?: string) => (typeof val === 'undefined' ? 'default' : val);
+const withDefault = (val?: string) => (typeof val === 'undefined' ? 'default' : val)
 
-export default function ConnectionOptionsDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const classes = useStyles();
-  const { settings, dispatchSetting } = useAppState();
-  const roomState = useRoomState();
-  const isDisabled = roomState !== 'disconnected';
+export default function ConnectionOptionsDialog({
+  open,
+  onClose,
+}: {
+  open: boolean
+  onClose: () => void
+}) {
+  const classes = useStyles()
+  const { settings, dispatchSetting } = useAppState()
+  const roomState = useRoomState()
+  const isDisabled = roomState !== 'disconnected'
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<{ value: unknown; name?: string }>) => {
-      dispatchSetting({ name: e.target.name as keyof Settings, value: e.target.value as string });
+      dispatchSetting({ name: e.target.name as keyof Settings, value: e.target.value as string })
     },
     [dispatchSetting]
-  );
+  )
 
   const handleNumberChange = useCallback(
     (e: React.ChangeEvent<{ value: unknown; name?: string }>) => {
-      if (!/[^\d]/.test(e.target.value as string)) handleChange(e);
+      if (!/[^\d]/.test(e.target.value as string)) handleChange(e)
     },
     [handleChange]
-  );
+  )
 
   return (
     <Dialog open={open} onClose={onClose} classes={{ paper: classes.paper }}>
@@ -87,7 +93,9 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
 
           <Grid item sm={6} xs={12}>
             <FormControl className={classes.formControl}>
-              <InputLabel id={inputLabels.dominantSpeakerPriority}>Dominant Speaker Priority:</InputLabel>
+              <InputLabel id={inputLabels.dominantSpeakerPriority}>
+                Dominant Speaker Priority:
+              </InputLabel>
               <Select
                 fullWidth
                 disabled={isDisabled}
@@ -139,7 +147,9 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
           </Grid>
           <Grid item sm={6} xs={12}>
             <FormControl className={classes.formControl}>
-              <InputLabel id={inputLabels.clientTrackSwitchOffControl}>Client Track Switch Off Control:</InputLabel>
+              <InputLabel id={inputLabels.clientTrackSwitchOffControl}>
+                Client Track Switch Off Control:
+              </InputLabel>
               <Select
                 fullWidth
                 disabled={isDisabled}
@@ -155,7 +165,9 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
             </FormControl>
 
             <FormControl className={classes.formControl}>
-              <InputLabel id={inputLabels.contentPreferencesMode}>Content Preferences Mode:</InputLabel>
+              <InputLabel id={inputLabels.contentPreferencesMode}>
+                Content Preferences Mode:
+              </InputLabel>
               <Select
                 fullWidth
                 disabled={isDisabled}
@@ -192,5 +204,5 @@ export default function ConnectionOptionsDialog({ open, onClose }: { open: boole
         </Button>
       </DialogActions>
     </Dialog>
-  );
+  )
 }

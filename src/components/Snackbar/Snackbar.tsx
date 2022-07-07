@@ -1,18 +1,18 @@
-import React from 'react';
-import clsx from 'clsx';
-import CloseIcon from '@material-ui/icons/Close';
-import ErrorIcon from '../../icons/ErrorIcon';
-import { IconButton, makeStyles, Theme, Typography } from '@material-ui/core';
-import MUISnackbar from '@material-ui/core/Snackbar';
-import WarningIcon from '../../icons/WarningIcon';
-import InfoIcon from '../../icons/InfoIcon';
+import React from 'react'
+import clsx from 'clsx'
+import CloseIcon from '@material-ui/icons/Close'
+import ErrorIcon from '../../icons/ErrorIcon'
+import { IconButton, makeStyles, Theme, Typography } from '@material-ui/core'
+import MUISnackbar from '@material-ui/core/Snackbar'
+import WarningIcon from '../../icons/WarningIcon'
+import InfoIcon from '../../icons/InfoIcon'
 
 interface SnackbarProps {
-  headline: string;
-  message: string | React.ReactNode;
-  variant?: 'error' | 'warning' | 'info';
-  open: boolean;
-  handleClose?: () => void;
+  headline: string
+  message: string | React.ReactNode
+  variant?: 'error' | 'warning' | 'info'
+  open: boolean
+  handleClose?: () => void
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -50,18 +50,18 @@ const useStyles = makeStyles((theme: Theme) => ({
   info: {
     borderLeft: '4px solid #0263e0',
   },
-}));
+}))
 
 export default function Snackbar({ headline, message, variant, open, handleClose }: SnackbarProps) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   const handleOnClose = (_: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
     if (reason === 'clickaway') {
-      return;
+      return
     }
 
-    handleClose?.();
-  };
+    handleClose?.()
+  }
 
   return (
     <MUISnackbar
@@ -105,5 +105,5 @@ export default function Snackbar({ headline, message, variant, open, handleClose
         </div>
       </div>
     </MUISnackbar>
-  );
+  )
 }

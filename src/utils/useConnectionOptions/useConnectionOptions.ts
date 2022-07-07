@@ -1,9 +1,9 @@
-import { ConnectOptions } from 'twilio-video';
-import { isMobile, removeUndefineds } from '..';
-import { useAppState } from '../../state';
+import { ConnectOptions } from 'twilio-video'
+import { isMobile, removeUndefineds } from '..'
+import { useAppState } from '../../state'
 
 export default function useConnectionOptions() {
-  const { settings } = useAppState();
+  const { settings } = useAppState()
 
   // See: https://sdk.twilio.com/js/video/releases/2.0.0/docs/global.html#ConnectOptions
   // for available connection options.
@@ -31,19 +31,19 @@ export default function useConnectionOptions() {
 
     //@ts-ignore - Internal use only. This property is not exposed in type definitions.
     environment: process.env.REACT_APP_TWILIO_ENVIRONMENT,
-  };
+  }
 
   // For mobile browsers, limit the maximum incoming video bitrate to 2.5 Mbps.
   if (isMobile && connectionOptions?.bandwidthProfile?.video) {
-    connectionOptions!.bandwidthProfile!.video!.maxSubscriptionBitrate = 2500000;
+    connectionOptions!.bandwidthProfile!.video!.maxSubscriptionBitrate = 2500000
   }
 
   if (process.env.REACT_APP_TWILIO_ENVIRONMENT === 'dev') {
     //@ts-ignore - Internal use only. This property is not exposed in type definitions.
-    connectionOptions!.wsServer = 'wss://us2.vss.dev.twilio.com/signaling';
+    connectionOptions!.wsServer = 'wss://us2.vss.dev.twilio.com/signaling'
   }
 
   // Here we remove any 'undefined' values. The twilio-video SDK will only use defaults
   // when no value is passed for an option. It will throw an error when 'undefined' is passed.
-  return removeUndefineds(connectionOptions);
+  return removeUndefineds(connectionOptions)
 }

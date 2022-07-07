@@ -1,50 +1,62 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { AudioTrack, LocalAudioTrack, RemoteAudioTrack } from 'twilio-video';
-import { interval } from 'd3-timer';
-import useIsTrackEnabled from '../../hooks/useIsTrackEnabled/useIsTrackEnabled';
-import useMediaStreamTrack from '../../hooks/useMediaStreamTrack/useMediaStreamTrack';
+import React, { useEffect, useRef, useState } from 'react'
+import { AudioTrack, LocalAudioTrack, RemoteAudioTrack } from 'twilio-video'
+import { interval } from 'd3-timer'
+import useIsTrackEnabled from '../../hooks/useIsTrackEnabled/useIsTrackEnabled'
+import useMediaStreamTrack from '../../hooks/useMediaStreamTrack/useMediaStreamTrack'
 
-let clipId = 0;
-const getUniqueClipId = () => clipId++;
+let clipId = 0
+const getUniqueClipId = () => clipId++
 
-// @ts-ignore
-const AudioContext = window.AudioContext || window.webkitAudioContext;
+let AudioContext: typeof window.AudioContext
+if (typeof window !== 'undefined') {
+  // @ts-ignore
+  AudioContext = window.AudioContext || window.webkitAudioContext
+}
 
 export function initializeAnalyser(stream: MediaStream) {
-  const audioContext = new AudioContext(); // Create a new audioContext for each audio indicator
-  const audioSource = audioContext.createMediaStreamSource(stream);
+  const audioContext = new AudioContext() // Create a new audioContext for each audio indicator
+  const audioSource = audioContext.createMediaStreamSource(stream)
 
-  const analyser = audioContext.createAnalyser();
-  analyser.smoothingTimeConstant = 0.2;
-  analyser.fftSize = 256;
+  const analyser = audioContext.createAnalyser()
+  analyser.smoothingTimeConstant = 0.2
+  analyser.fftSize = 256
 
-  audioSource.connect(analyser);
+  audioSource.connect(analyser)
 
   // Here we provide a way for the audioContext to be closed.
   // Closing the audioContext allows the unused audioSource to be garbage collected.
   stream.addEventListener('cleanup', () => {
     if (audioContext.state !== 'closed') {
-      audioContext.close();
+      audioContext.close()
     }
-  });
+  })
 
-  return analyser;
+  return analyser
 }
 
-const isIOS = /iPhone|iPad/.test(navigator.userAgent);
+let isIOS = false
+if (typeof navigator !== 'undefined') {
+  isIOS = /iPhone|iPad/.test(navigator.userAgent)
+}
 
-function AudioLevelIndicator({ audioTrack, color = 'white' }: { audioTrack?: AudioTrack; color?: string }) {
-  const SVGRectRef = useRef<SVGRectElement>(null);
-  const [analyser, setAnalyser] = useState<AnalyserNode>();
-  const isTrackEnabled = useIsTrackEnabled(audioTrack as LocalAudioTrack | RemoteAudioTrack);
-  const mediaStreamTrack = useMediaStreamTrack(audioTrack);
+function AudioLevelIndicator({
+  audioTrack,
+  color = 'white',
+}: {
+  audioTrack?: AudioTrack
+  color?: string
+}) {
+  const SVGRectRef = useRef<SVGRectElement>(null)
+  const [analyser, setAnalyser] = useState<AnalyserNode>()
+  const isTrackEnabled = useIsTrackEnabled(audioTrack as LocalAudioTrack | RemoteAudioTrack)
+  const mediaStreamTrack = useMediaStreamTrack(audioTrack)
 
   useEffect(() => {
     if (audioTrack && mediaStreamTrack && isTrackEnabled) {
       // Here we create a new MediaStream from a clone of the mediaStreamTrack.
       // A clone is created to allow multiple instances of this component for a single
       // AudioTrack on iOS Safari. We only clone the mediaStreamTrack on iOS.
-      let newMediaStream = new MediaStream([isIOS ? mediaStreamTrack.clone() : mediaStreamTrack]);
+      let newMediaStream = new MediaStream([isIOS ? mediaStreamTrack.clone() : mediaStreamTrack])
 
       // Here we listen for the 'stopped' event on the audioTrack. When the audioTrack is stopped,
       // we stop the cloned track that is stored in 'newMediaStream'. It is important that we stop
@@ -54,66 +66,72 @@ function AudioLevelIndicator({ audioTrack, color = 'white' }: { audioTrack?: Aud
         if (isIOS) {
           // If we are on iOS, then we want to stop the MediaStreamTrack that we have previously cloned.
           // If we are not on iOS, then we do not stop the MediaStreamTrack since it is the original and still in use.
-          newMediaStream.getTracks().forEach(track => track.stop());
+          newMediaStream.getTracks().forEach((track) => track.stop())
         }
-        newMediaStream.dispatchEvent(new Event('cleanup')); // Stop the audioContext
-      };
-      audioTrack.on('stopped', stopAllMediaStreamTracks);
+        newMediaStream.dispatchEvent(new Event('cleanup')) // Stop the audioContext
+      }
+      audioTrack.on('stopped', stopAllMediaStreamTracks)
 
       const reinitializeAnalyser = () => {
-        stopAllMediaStreamTracks();
+        stopAllMediaStreamTracks()
         // We only clone the mediaStreamTrack on iOS.
-        newMediaStream = new MediaStream([isIOS ? mediaStreamTrack.clone() : mediaStreamTrack]);
-        setAnalyser(initializeAnalyser(newMediaStream));
-      };
+        newMediaStream = new MediaStream([isIOS ? mediaStreamTrack.clone() : mediaStreamTrack])
+        setAnalyser(initializeAnalyser(newMediaStream))
+      }
 
-      setAnalyser(initializeAnalyser(newMediaStream));
+      setAnalyser(initializeAnalyser(newMediaStream))
 
       // Here we reinitialize the AnalyserNode on focus to avoid an issue in Safari
       // where the analysers stop functioning when the user switches to a new tab
       // and switches back to the app.
-      window.addEventListener('focus', reinitializeAnalyser);
+      window.addEventListener('focus', reinitializeAnalyser)
 
       return () => {
-        stopAllMediaStreamTracks();
-        window.removeEventListener('focus', reinitializeAnalyser);
-        audioTrack.off('stopped', stopAllMediaStreamTracks);
-      };
+        stopAllMediaStreamTracks()
+        window.removeEventListener('focus', reinitializeAnalyser)
+        audioTrack.off('stopped', stopAllMediaStreamTracks)
+      }
     }
-  }, [isTrackEnabled, mediaStreamTrack, audioTrack]);
+  }, [isTrackEnabled, mediaStreamTrack, audioTrack])
 
   useEffect(() => {
-    const SVGClipElement = SVGRectRef.current;
+    const SVGClipElement = SVGRectRef.current
 
     if (isTrackEnabled && SVGClipElement && analyser) {
-      const sampleArray = new Uint8Array(analyser.frequencyBinCount);
+      const sampleArray = new Uint8Array(analyser.frequencyBinCount)
 
       const timer = interval(() => {
-        analyser.getByteFrequencyData(sampleArray);
-        let values = 0;
+        analyser.getByteFrequencyData(sampleArray)
+        let values = 0
 
-        const length = sampleArray.length;
+        const length = sampleArray.length
         for (let i = 0; i < length; i++) {
-          values += sampleArray[i];
+          values += sampleArray[i]
         }
 
-        const volume = Math.min(14, Math.max(0, Math.log10(values / length / 3) * 7));
+        const volume = Math.min(14, Math.max(0, Math.log10(values / length / 3) * 7))
 
-        SVGClipElement?.setAttribute('y', String(14 - volume));
-      }, 100);
+        SVGClipElement?.setAttribute('y', String(14 - volume))
+      }, 100)
 
       return () => {
-        SVGClipElement.setAttribute('y', '14');
-        timer.stop();
-      };
+        SVGClipElement.setAttribute('y', '14')
+        timer.stop()
+      }
     }
-  }, [isTrackEnabled, analyser]);
+  }, [isTrackEnabled, analyser])
 
   // Each instance of this component will need a unique HTML ID
-  const clipPathId = `audio-level-clip-${getUniqueClipId()}`;
+  const clipPathId = `audio-level-clip-${getUniqueClipId()}`
 
   return isTrackEnabled ? (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" data-test-audio-indicator>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      data-test-audio-indicator
+    >
       <defs>
         <clipPath id={clipPathId}>
           <rect ref={SVGRectRef} x="0" y="14" width="24" height="24" />
@@ -161,7 +179,7 @@ function AudioLevelIndicator({ audioTrack, color = 'white' }: { audioTrack?: Aud
         />
       </g>
     </svg>
-  );
+  )
 }
 
-export default React.memo(AudioLevelIndicator);
+export default React.memo(AudioLevelIndicator)

@@ -1,11 +1,11 @@
-import React, { useState, useEffect, FormEvent } from 'react';
-import DeviceSelectionScreen from './DeviceSelectionScreen/DeviceSelectionScreen';
-import IntroContainer from '../IntroContainer/IntroContainer';
-import MediaErrorSnackbar from './MediaErrorSnackbar/MediaErrorSnackbar';
-import RoomNameScreen from './RoomNameScreen/RoomNameScreen';
-import { useAppState } from '../../state';
-import { useParams } from 'react-router-dom';
-import useVideoContext from '../../hooks/useVideoContext/useVideoContext';
+import React, { useState, useEffect, FormEvent } from 'react'
+import DeviceSelectionScreen from './DeviceSelectionScreen/DeviceSelectionScreen'
+import IntroContainer from '../IntroContainer/IntroContainer'
+import MediaErrorSnackbar from './MediaErrorSnackbar/MediaErrorSnackbar'
+import RoomNameScreen from './RoomNameScreen/RoomNameScreen'
+import { useAppState } from '../../state'
+import useVideoContext from '../../hooks/useVideoContext/useVideoContext'
+import { useRouter } from 'next/router'
 
 export enum Steps {
   roomNameStep,
@@ -13,43 +13,49 @@ export enum Steps {
 }
 
 export default function PreJoinScreens() {
-  const { user } = useAppState();
-  const { getAudioAndVideoTracks } = useVideoContext();
-  const { URLRoomName } = useParams();
-  const [step, setStep] = useState(Steps.roomNameStep);
+  const { user } = useAppState()
+  const router = useRouter()
 
-  const [name, setName] = useState<string>(user?.displayName || '');
-  const [roomName, setRoomName] = useState<string>('');
+  const { getAudioAndVideoTracks } = useVideoContext()
+  const { URLRoomName } = { URLRoomName: router?.query?.slug || 'test' }
+  const [step, setStep] = useState(Steps.roomNameStep)
 
-  const [mediaError, setMediaError] = useState<Error>();
+  const [name, setName] = useState<string>(user?.displayName || '')
+  const [roomName, setRoomName] = useState<string>('')
+
+  const [mediaError, setMediaError] = useState<Error>()
 
   useEffect(() => {
     if (URLRoomName) {
-      setRoomName(URLRoomName);
+      setRoomName(URLRoomName)
       if (user?.displayName) {
-        setStep(Steps.deviceSelectionStep);
+        setStep(Steps.deviceSelectionStep)
       }
     }
-  }, [user, URLRoomName]);
+  }, [user, URLRoomName])
 
   useEffect(() => {
     if (step === Steps.deviceSelectionStep && !mediaError) {
       getAudioAndVideoTracks().catch(error => {
-        console.log('Error acquiring local media:');
-        console.dir(error);
-        setMediaError(error);
-      });
+        console.log('Error acquiring local media:')
+        console.dir(error)
+        setMediaError(error)
+      })
     }
-  }, [getAudioAndVideoTracks, step, mediaError]);
+  }, [getAudioAndVideoTracks, step, mediaError])
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    event.preventDefault()
     // If this app is deployed as a twilio function, don't change the URL because routing isn't supported.
     if (!window.location.origin.includes('twil.io')) {
-      window.history.replaceState(null, '', window.encodeURI(`/room/${roomName}${window.location.search || ''}`));
+      window.history.replaceState(
+        null,
+        '',
+        window.encodeURI(`/room/${roomName}${window.location.search || ''}`)
+      )
     }
-    setStep(Steps.deviceSelectionStep);
-  };
+    setStep(Steps.deviceSelectionStep)
+  }
 
   return (
     <IntroContainer>
@@ -68,5 +74,5 @@ export default function PreJoinScreens() {
         <DeviceSelectionScreen name={name} roomName={roomName} setStep={setStep} />
       )}
     </IntroContainer>
-  );
+  )
 }

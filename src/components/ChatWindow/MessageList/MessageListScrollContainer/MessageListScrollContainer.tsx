@@ -1,11 +1,11 @@
 /* istanbul ignore file */
-import React from 'react';
-import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
-import Button from '@material-ui/core/Button';
-import clsx from 'clsx';
-import { Message } from '@twilio/conversations/lib/message';
-import throttle from 'lodash.throttle';
-import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles';
+import React from 'react'
+import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward'
+import Button from '@material-ui/core/Button'
+import clsx from 'clsx'
+import { Message } from '@twilio/conversations'
+import throttle from 'lodash.throttle'
+import { withStyles, WithStyles, createStyles } from '@material-ui/core/styles'
 
 const styles = createStyles({
   outerContainer: {
@@ -39,16 +39,16 @@ const styles = createStyles({
     opacity: 1,
     bottom: '24px',
   },
-});
+})
 
 interface MessageListScrollContainerProps extends WithStyles<typeof styles> {
-  messages: Message[];
+  messages: Message[]
 }
 
 interface MessageListScrollContainerState {
-  isScrolledToBottom: boolean;
-  showButton: boolean;
-  messageNotificationCount: number;
+  isScrolledToBottom: boolean
+  showButton: boolean
+  messageNotificationCount: number
 }
 
 /*
@@ -66,27 +66,30 @@ export class MessageListScrollContainer extends React.Component<
   MessageListScrollContainerProps,
   MessageListScrollContainerState
 > {
-  chatThreadRef = React.createRef<HTMLDivElement>();
-  state = { isScrolledToBottom: true, showButton: false, messageNotificationCount: 0 };
+  chatThreadRef = React.createRef<HTMLDivElement>()
+  state = { isScrolledToBottom: true, showButton: false, messageNotificationCount: 0 }
 
   scrollToBottom() {
-    const innerScrollContainerEl = this.chatThreadRef.current!;
-    innerScrollContainerEl.scrollTop = innerScrollContainerEl!.scrollHeight;
+    const innerScrollContainerEl = this.chatThreadRef.current!
+    innerScrollContainerEl.scrollTop = innerScrollContainerEl!.scrollHeight
   }
 
   componentDidMount() {
-    this.scrollToBottom();
-    this.chatThreadRef.current!.addEventListener('scroll', this.handleScroll);
+    this.scrollToBottom()
+    this.chatThreadRef.current!.addEventListener('scroll', this.handleScroll)
   }
 
   // This component updates as users send new messages:
-  componentDidUpdate(prevProps: MessageListScrollContainerProps, prevState: MessageListScrollContainerState) {
-    const hasNewMessages = this.props.messages.length !== prevProps.messages.length;
+  componentDidUpdate(
+    prevProps: MessageListScrollContainerProps,
+    prevState: MessageListScrollContainerState
+  ) {
+    const hasNewMessages = this.props.messages.length !== prevProps.messages.length
 
     if (prevState.isScrolledToBottom && hasNewMessages) {
-      this.scrollToBottom();
+      this.scrollToBottom()
     } else if (hasNewMessages) {
-      const numberOfNewMessages = this.props.messages.length - prevProps.messages.length;
+      const numberOfNewMessages = this.props.messages.length - prevProps.messages.length
 
       this.setState(previousState => ({
         // If there's at least one new message, show the 'new message' button:
@@ -97,50 +100,59 @@ export class MessageListScrollContainer extends React.Component<
         messageNotificationCount: previousState.showButton
           ? previousState.messageNotificationCount + numberOfNewMessages
           : 1,
-      }));
+      }))
     }
   }
 
   handleScroll = throttle(() => {
-    const innerScrollContainerEl = this.chatThreadRef.current!;
+    const innerScrollContainerEl = this.chatThreadRef.current!
     // Because this.handleScroll() is a throttled method,
     // it's possible that it can be called after this component unmounts, and this element will be null.
     // Therefore, if it doesn't exist, don't do anything:
-    if (!innerScrollContainerEl) return;
+    if (!innerScrollContainerEl) return
 
     // On systems using display scaling, scrollTop may return a decimal value, so we need to account for this in the
     // "isScrolledToBottom" calculation.
     const isScrolledToBottom =
       Math.abs(
-        innerScrollContainerEl.clientHeight + innerScrollContainerEl.scrollTop - innerScrollContainerEl!.scrollHeight
-      ) < 1;
+        innerScrollContainerEl.clientHeight +
+          innerScrollContainerEl.scrollTop -
+          innerScrollContainerEl!.scrollHeight
+      ) < 1
 
     this.setState(prevState => ({
       isScrolledToBottom,
       showButton: isScrolledToBottom ? false : prevState.showButton,
-    }));
-  }, 300);
+    }))
+  }, 300)
 
   handleClick = () => {
-    const innerScrollContainerEl = this.chatThreadRef.current!;
+    const innerScrollContainerEl = this.chatThreadRef.current!
 
-    innerScrollContainerEl.scrollTo({ top: innerScrollContainerEl.scrollHeight, behavior: 'smooth' });
+    innerScrollContainerEl.scrollTo({
+      top: innerScrollContainerEl.scrollHeight,
+      behavior: 'smooth',
+    })
 
-    this.setState({ showButton: false });
-  };
+    this.setState({ showButton: false })
+  }
 
   componentWillUnmount() {
-    const innerScrollContainerEl = this.chatThreadRef.current!;
+    const innerScrollContainerEl = this.chatThreadRef.current!
 
-    innerScrollContainerEl.removeEventListener('scroll', this.handleScroll);
+    innerScrollContainerEl.removeEventListener('scroll', this.handleScroll)
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes } = this.props
 
     return (
       <div className={classes.outerContainer}>
-        <div className={classes.innerScrollContainer} ref={this.chatThreadRef} data-cy-message-list-inner-scroll>
+        <div
+          className={classes.innerScrollContainer}
+          ref={this.chatThreadRef}
+          data-cy-message-list-inner-scroll
+        >
           <div className={classes.messageListContainer}>
             {this.props.children}
             <Button
@@ -157,8 +169,8 @@ export class MessageListScrollContainer extends React.Component<
           </div>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default withStyles(styles)(MessageListScrollContainer);
+export default withStyles(styles)(MessageListScrollContainer)

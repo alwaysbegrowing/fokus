@@ -1,33 +1,33 @@
-import React, { useState, useRef } from 'react';
-import Button from '@material-ui/core/Button';
-import MenuContainer from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles, Theme, useMediaQuery } from '@material-ui/core';
+import React, { useState, useRef } from 'react'
+import Button from '@material-ui/core/Button'
+import MenuContainer from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import MoreIcon from '@material-ui/icons/MoreVert'
+import Typography from '@material-ui/core/Typography'
+import { makeStyles, Theme, useMediaQuery } from '@material-ui/core'
 
-import AboutDialog from '../../../AboutDialog/AboutDialog';
-import ConnectionOptionsDialog from '../../../ConnectionOptionsDialog/ConnectionOptionsDialog';
-import DeviceSelectionDialog from '../../../DeviceSelectionDialog/DeviceSelectionDialog';
-import SettingsIcon from '../../../../icons/SettingsIcon';
-import { useAppState } from '../../../../state';
+import AboutDialog from '../../../AboutDialog/AboutDialog'
+import ConnectionOptionsDialog from '../../../ConnectionOptionsDialog/ConnectionOptionsDialog'
+import DeviceSelectionDialog from '../../../DeviceSelectionDialog/DeviceSelectionDialog'
+import SettingsIcon from '../../../../icons/SettingsIcon'
+import { useAppState } from '../../../../state'
 
 const useStyles = makeStyles({
   settingsButton: {
     margin: '1.8em 0 0',
   },
-});
+})
 
 export default function SettingsMenu({ mobileButtonClass }: { mobileButtonClass?: string }) {
-  const classes = useStyles();
-  const { roomType } = useAppState();
-  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'));
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [aboutOpen, setAboutOpen] = useState(false);
-  const [deviceSettingsOpen, setDeviceSettingsOpen] = useState(false);
-  const [connectionSettingsOpen, setConnectionSettingsOpen] = useState(false);
+  const classes = useStyles()
+  const { roomType } = useAppState()
+  const isMobile = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'))
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [aboutOpen, setAboutOpen] = useState(false)
+  const [deviceSettingsOpen, setDeviceSettingsOpen] = useState(false)
+  const [connectionSettingsOpen, setConnectionSettingsOpen] = useState(false)
 
-  const anchorRef = useRef<HTMLButtonElement>(null);
+  const anchorRef = useRef<HTMLButtonElement>(null)
 
   return (
     <>
@@ -52,7 +52,7 @@ export default function SettingsMenu({ mobileButtonClass }: { mobileButtonClass?
       )}
       <MenuContainer
         open={menuOpen}
-        onClose={() => setMenuOpen(isOpen => !isOpen)}
+        onClose={() => setMenuOpen((isOpen) => !isOpen)}
         anchorEl={anchorRef.current}
         getContentAnchorEl={null}
         anchorOrigin={{
@@ -79,24 +79,24 @@ export default function SettingsMenu({ mobileButtonClass }: { mobileButtonClass?
       <AboutDialog
         open={aboutOpen}
         onClose={() => {
-          setAboutOpen(false);
-          setMenuOpen(false);
+          setAboutOpen(false)
+          setMenuOpen(false)
         }}
       />
       <DeviceSelectionDialog
         open={deviceSettingsOpen}
         onClose={() => {
-          setDeviceSettingsOpen(false);
-          setMenuOpen(false);
+          setDeviceSettingsOpen(false)
+          setMenuOpen(false)
         }}
       />
       <ConnectionOptionsDialog
         open={connectionSettingsOpen}
         onClose={() => {
-          setConnectionSettingsOpen(false);
-          setMenuOpen(false);
+          setConnectionSettingsOpen(false)
+          setMenuOpen(false)
         }}
       />
     </>
-  );
+  )
 }

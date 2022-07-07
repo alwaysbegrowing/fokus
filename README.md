@@ -198,7 +198,6 @@ Run unit tests with
 
 This will run all unit tests with Jest and output the results to the console.
 
-
 ### Application Architecture
 
 The state of this application (with a few exceptions) is managed by the [room object](https://sdk.twilio.com/js/video/releases/2.13.0/docs/Room.html) that is supplied by the SDK. The `room` object contains all information about the room that the user is connected to. The class hierarchy of the `room` object can be viewed [here](https://www.twilio.com/docs/video/migrating-1x-2x#object-model).

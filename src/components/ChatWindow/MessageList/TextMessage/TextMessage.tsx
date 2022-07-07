@@ -1,8 +1,8 @@
-import React from 'react';
-import clsx from 'clsx';
-import { Link } from '@material-ui/core';
-import linkify from 'linkify-it';
-import { makeStyles } from '@material-ui/core/styles';
+import React from 'react'
+import clsx from 'clsx'
+import { Link } from '@material-ui/core'
+import linkify from 'linkify-it'
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles({
   messageContainer: {
@@ -19,37 +19,37 @@ const useStyles = makeStyles({
   isLocalParticipant: {
     backgroundColor: '#CCE4FF',
   },
-});
+})
 
 interface TextMessageProps {
-  body: string;
-  isLocalParticipant: boolean;
+  body: string
+  isLocalParticipant: boolean
 }
 
 function addLinks(text: string) {
-  const matches = linkify().match(text);
-  if (!matches) return text;
+  const matches = linkify().match(text)
+  if (!matches) return text
 
-  const results = [];
-  let lastIndex = 0;
+  const results = []
+  let lastIndex = 0
 
   matches.forEach((match, i) => {
-    results.push(text.slice(lastIndex, match.index));
+    results.push(text.slice(lastIndex, match.index))
     results.push(
       <Link target="_blank" rel="noreferrer" href={match.url} key={i}>
         {match.text}
       </Link>
-    );
-    lastIndex = match.lastIndex;
-  });
+    )
+    lastIndex = match.lastIndex
+  })
 
-  results.push(text.slice(lastIndex, text.length));
+  results.push(text.slice(lastIndex, text.length))
 
-  return results;
+  return results
 }
 
 export default function TextMessage({ body, isLocalParticipant }: TextMessageProps) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <div>
@@ -61,5 +61,5 @@ export default function TextMessage({ body, isLocalParticipant }: TextMessagePro
         <div>{addLinks(body)}</div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,7 +1,7 @@
-import React from 'react';
-import Video from 'twilio-video';
-import { Container, Link, Typography, Paper, Grid } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import React from 'react'
+import Video from 'twilio-video'
+import { Container, Link, Typography, Paper, Grid } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles({
   container: {
@@ -13,19 +13,19 @@ const useStyles = makeStyles({
   heading: {
     marginBottom: '0.4em',
   },
-});
+})
 
-function isWebRTCSupported() {
+export function isWebRTCSupported() {
   return (
     typeof navigator === 'object' &&
     typeof navigator.mediaDevices === 'object' &&
     typeof navigator.mediaDevices.getUserMedia === 'function' &&
     typeof RTCPeerConnection === 'function'
-  );
+  )
 }
 
 export default function UnsupportedBrowserWarning({ children }: { children: React.ReactElement }) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   if (!isWebRTCSupported()) {
     return (
@@ -61,8 +61,8 @@ export default function UnsupportedBrowserWarning({ children }: { children: Reac
           </Grid>
         </Grid>
       </Container>
-    );
+    )
   }
 
-  return children;
+  return children
 }

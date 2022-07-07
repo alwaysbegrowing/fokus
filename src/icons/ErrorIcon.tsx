@@ -1,8 +1,14 @@
-import React from 'react';
+import React from 'react'
 
 export default function ErrorIcon() {
   return (
-    <svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="14px"
+      height="14px"
+      viewBox="0 0 14 14"
+      version="1.1"
+      xmlns="http://www.w3.org/2000/svg"
+    >
       <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
         <g transform="translate(-299.000000, -723.000000)" fill="#D61F1F">
           <g transform="translate(276.000000, 704.000000)">
@@ -16,5 +22,5 @@ export default function ErrorIcon() {
         </g>
       </g>
     </svg>
-  );
+  )
 }

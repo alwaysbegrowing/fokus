@@ -4,7 +4,6 @@ about: Suggest an idea for this project
 title: ''
 labels: feature
 assignees: ''
-
 ---
 
 **What is the feature that you would like to see in the app? Please describe.**

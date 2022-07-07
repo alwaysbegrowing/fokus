@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Button, CircularProgress, Grid, makeStyles } from '@material-ui/core';
-import clsx from 'clsx';
-import { Conversation } from '@twilio/conversations/lib/conversation';
-import FileAttachmentIcon from '../../../icons/FileAttachmentIcon';
-import { isMobile } from '../../../utils';
-import SendMessageIcon from '../../../icons/SendMessageIcon';
-import Snackbar from '../../Snackbar/Snackbar';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import React, { useEffect, useRef, useState } from 'react'
+import { Button, CircularProgress, Grid, makeStyles } from '@material-ui/core'
+import clsx from 'clsx'
+import { Conversation } from '@twilio/conversations'
+import FileAttachmentIcon from '../../../icons/FileAttachmentIcon'
+import { isMobile } from '../../../utils'
+import SendMessageIcon from '../../../icons/SendMessageIcon'
+import Snackbar from '../../Snackbar/Snackbar'
+import TextareaAutosize from '@material-ui/core/TextareaAutosize'
 
 const useStyles = makeStyles(theme => ({
   chatInputContainer: {
@@ -19,7 +19,6 @@ const useStyles = makeStyles(theme => ({
     border: '0',
     resize: 'none',
     fontSize: '14px',
-    fontFamily: 'Inter',
     outline: 'none',
   },
   button: {
@@ -57,75 +56,75 @@ const useStyles = makeStyles(theme => ({
     borderColor: theme.palette.primary.main,
     borderRadius: '4px',
   },
-}));
+}))
 
 interface ChatInputProps {
-  conversation: Conversation;
-  isChatWindowOpen: boolean;
+  conversation: Conversation
+  isChatWindowOpen: boolean
 }
 
 const ALLOWED_FILE_TYPES =
-  'audio/*, image/*, text/*, video/*, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document .xslx, .ppt, .pdf, .key, .svg, .csv';
+  'audio/*, image/*, text/*, video/*, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document .xslx, .ppt, .pdf, .key, .svg, .csv'
 
 export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputProps) {
-  const classes = useStyles();
-  const [messageBody, setMessageBody] = useState('');
-  const [isSendingFile, setIsSendingFile] = useState(false);
-  const [fileSendError, setFileSendError] = useState<string | null>(null);
-  const isValidMessage = /\S/.test(messageBody);
-  const textInputRef = useRef<HTMLTextAreaElement>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isTextareaFocused, setIsTextareaFocused] = useState(false);
+  const classes = useStyles()
+  const [messageBody, setMessageBody] = useState('')
+  const [isSendingFile, setIsSendingFile] = useState(false)
+  const [fileSendError, setFileSendError] = useState<string | null>(null)
+  const isValidMessage = /\S/.test(messageBody)
+  const textInputRef = useRef<HTMLTextAreaElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [isTextareaFocused, setIsTextareaFocused] = useState(false)
 
   useEffect(() => {
     if (isChatWindowOpen) {
       // When the chat window is opened, we will focus on the text input.
       // This is so the user doesn't have to click on it to begin typing a message.
-      textInputRef.current?.focus();
+      textInputRef.current?.focus()
     }
-  }, [isChatWindowOpen]);
+  }, [isChatWindowOpen])
 
   const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setMessageBody(event.target.value);
-  };
+    setMessageBody(event.target.value)
+  }
 
   // ensures pressing enter + shift creates a new line, so that enter on its own only sends the message:
   const handleReturnKeyPress = (event: React.KeyboardEvent) => {
     if (!isMobile && event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      handleSendMessage(messageBody);
+      event.preventDefault()
+      handleSendMessage(messageBody)
     }
-  };
+  }
 
   const handleSendMessage = (message: string) => {
     if (isValidMessage) {
-      conversation.sendMessage(message.trim());
-      setMessageBody('');
+      conversation.sendMessage(message.trim())
+      setMessageBody('')
     }
-  };
+  }
 
   const handleSendFile = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
+    const file = event.target.files?.[0]
     if (file) {
-      var formData = new FormData();
-      formData.append('userfile', file);
-      setIsSendingFile(true);
-      setFileSendError(null);
+      var formData = new FormData()
+      formData.append('userfile', file)
+      setIsSendingFile(true)
+      setFileSendError(null)
       conversation
         .sendMessage(formData)
         .catch(e => {
           if (e.code === 413) {
-            setFileSendError('File size is too large. Maximum file size is 150MB.');
+            setFileSendError('File size is too large. Maximum file size is 150MB.')
           } else {
-            setFileSendError('There was a problem uploading the file. Please try again.');
+            setFileSendError('There was a problem uploading the file. Please try again.')
           }
-          console.log('Problem sending file: ', e);
+          console.log('Problem sending file: ', e)
         })
         .finally(() => {
-          setIsSendingFile(false);
-        });
+          setIsSendingFile(false)
+        })
     }
-  };
+  }
 
   return (
     <div className={classes.chatInputContainer}>
@@ -136,8 +135,12 @@ export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputP
         variant="error"
         handleClose={() => setFileSendError(null)}
       />
-      <div className={clsx(classes.textAreaContainer, { [classes.isTextareaFocused]: isTextareaFocused })}>
-        {/* 
+      <div
+        className={clsx(classes.textAreaContainer, {
+          [classes.isTextareaFocused]: isTextareaFocused,
+        })}
+      >
+        {/*
         Here we add the "isTextareaFocused" class when the user is focused on the TextareaAutosize component.
         This helps to ensure a consistent appearance across all browsers. Adding padding to the TextareaAutosize
         component does not work well in Firefox. See: https://github.com/twilio/twilio-video-app-react/issues/498
@@ -171,11 +174,17 @@ export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputP
         />
         <div className={classes.buttonContainer}>
           <div className={classes.fileButtonContainer}>
-            <Button className={classes.button} onClick={() => fileInputRef.current?.click()} disabled={isSendingFile}>
+            <Button
+              className={classes.button}
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isSendingFile}
+            >
               <FileAttachmentIcon />
             </Button>
 
-            {isSendingFile && <CircularProgress size={24} className={classes.fileButtonLoadingSpinner} />}
+            {isSendingFile && (
+              <CircularProgress size={24} className={classes.fileButtonLoadingSpinner} />
+            )}
           </div>
 
           <Button
@@ -191,5 +200,5 @@ export default function ChatInput({ conversation, isChatWindowOpen }: ChatInputP
         </div>
       </Grid>
     </div>
-  );
+  )
 }

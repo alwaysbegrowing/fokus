@@ -4,7 +4,6 @@ about: Ask a question about the video app
 title: ''
 labels: question
 assignees: ''
-
 ---
 
 **Question**
