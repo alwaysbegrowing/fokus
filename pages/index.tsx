@@ -1,15 +1,15 @@
 import React from 'react';
 import { styled, Theme } from '@material-ui/core/styles';
 
-import MenuBar from './components/MenuBar/MenuBar';
-import MobileTopMenuBar from './components/MobileTopMenuBar/MobileTopMenuBar';
-import PreJoinScreens from './components/PreJoinScreens/PreJoinScreens';
-import ReconnectingNotification from './components/ReconnectingNotification/ReconnectingNotification';
-import RecordingNotifications from './components/RecordingNotifications/RecordingNotifications';
-import Room from './components/Room/Room';
+import MenuBar from '../src/components/MenuBar/MenuBar';
+import MobileTopMenuBar from '../src/components/MobileTopMenuBar/MobileTopMenuBar';
+import PreJoinScreens from '../src/components/PreJoinScreens/PreJoinScreens';
+import ReconnectingNotification from '../src/components/ReconnectingNotification/ReconnectingNotification';
+import RecordingNotifications from '../src/components/RecordingNotifications/RecordingNotifications';
+import Room from '../src/components/Room/Room';
 
-import useHeight from './hooks/useHeight/useHeight';
-import useRoomState from './hooks/useRoomState/useRoomState';
+import useHeight from '../src/hooks/useHeight/useHeight';
+import useRoomState from '../src/hooks/useRoomState/useRoomState';
 
 const Container = styled('div')({
   display: 'grid',

@@ -1,11 +1,11 @@
 import React from 'react';
-import App from './App';
-import MenuBar from './components/MenuBar/MenuBar';
-import PreJoinScreens from './components/PreJoinScreens/PreJoinScreens';
-import Room from './components/Room/Room';
+import App from '.';
+import MenuBar from '../src/components/MenuBar/MenuBar';
+import PreJoinScreens from '../src/components/PreJoinScreens/PreJoinScreens';
+import Room from '../src/components/Room/Room';
 import { shallow } from 'enzyme';
-import useHeight from './hooks/useHeight/useHeight';
-import useRoomState from './hooks/useRoomState/useRoomState';
+import useHeight from '../src/hooks/useHeight/useHeight';
+import useRoomState from '../src/hooks/useRoomState/useRoomState';
 
 jest.mock('./hooks/useRoomState/useRoomState');
 jest.mock('./hooks/useHeight/useHeight');
