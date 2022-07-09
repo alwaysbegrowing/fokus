@@ -53,7 +53,7 @@ export default function Menu(props: { buttonClassName?: string }) {
   return (
     <>
       <Button
-        onClick={() => setMenuOpen(isOpen => !isOpen)}
+        onClick={() => setMenuOpen((isOpen) => !isOpen)}
         ref={anchorRef}
         className={props.buttonClassName}
         data-cy-more-button
@@ -69,7 +69,7 @@ export default function Menu(props: { buttonClassName?: string }) {
       </Button>
       <MenuContainer
         open={menuOpen}
-        onClose={() => setMenuOpen(isOpen => !isOpen)}
+        onClose={() => setMenuOpen((isOpen) => !isOpen)}
         anchorEl={anchorRef.current}
         anchorOrigin={{
           vertical: 'top',

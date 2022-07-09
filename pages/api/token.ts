@@ -43,7 +43,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     // See if conversation already exists
-    await conversationsClient.conversations(room.sid).fetch()
+    await conversationsClient.conversations(room.uniqueName).fetch()
   } catch (e) {
     try {
       // If conversation doesn't exist, create it.
@@ -51,7 +51,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // This helps to clean up old conversations since there is a limit that a single participant
       // can not be added to more than 1,000 open conversations.
       await conversationsClient.conversations.create({
-        uniqueName: room.sid,
+        uniqueName: room.uniqueName,
         'timers.closed': 'P1D',
       })
     } catch (e) {
@@ -60,7 +60,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    await conversationsClient.conversations(room.sid).participants.create({ identity })
+    await conversationsClient.conversations(room.uniqueName).participants.create({ identity })
   } catch (e: any) {
     // Ignore "Participant already exists" error (50433)
     if (e?.code !== 50433) {

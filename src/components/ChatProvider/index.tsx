@@ -25,12 +25,12 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   const connect = useCallback(
     (token: string) => {
       Client.create(token)
-        .then(client => {
+        .then((client) => {
           //@ts-ignore
           window.chatClient = client
           setChatClient(client)
         })
-        .catch(e => {
+        .catch((e) => {
           console.error(e)
           onError(new Error("There was a problem connecting to Twilio's conversation service."))
         })
@@ -41,8 +41,8 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (conversation) {
       const handleMessageAdded = (message: Message) =>
-        setMessages(oldMessages => [...oldMessages, message])
-      conversation.getMessages().then(newMessages => setMessages(newMessages.items))
+        setMessages((oldMessages) => [...oldMessages, message])
+      conversation.getMessages().then((newMessages) => setMessages(newMessages.items))
       conversation.on('messageAdded', handleMessageAdded)
       return () => {
         conversation.off('messageAdded', handleMessageAdded)
@@ -65,13 +65,13 @@ export const ChatProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (room && chatClient) {
       chatClient
-        .getConversationByUniqueName(room.sid)
-        .then(newConversation => {
+        .getConversationByUniqueName(room.name)
+        .then((newConversation) => {
           //@ts-ignore
           window.chatConversation = newConversation
           setConversation(newConversation)
         })
-        .catch(e => {
+        .catch((e) => {
           console.error(e)
           onError(
             new Error('There was a problem getting the Conversation associated with this room.')
