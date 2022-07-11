@@ -52,7 +52,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // can not be added to more than 1,000 open conversations.
       await conversationsClient.conversations.create({
         uniqueName: room.uniqueName,
-        'timers.closed': 'P1D',
       })
     } catch (e) {
       return res.status(500).json({ error: 'error!' })
