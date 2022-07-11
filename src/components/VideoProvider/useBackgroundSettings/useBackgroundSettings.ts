@@ -134,7 +134,10 @@ export default function useBackgroundSettings(
   room?: Room | null
 ) {
   const [backgroundSettings, setBackgroundSettings] = useState<BackgroundSettings>(() => {
-    const localStorageSettings = window.localStorage.getItem(SELECTED_BACKGROUND_SETTINGS_KEY)
+    const localStorageSettings =
+      typeof window !== 'undefined'
+        ? window.localStorage.getItem(SELECTED_BACKGROUND_SETTINGS_KEY)
+        : undefined
     return localStorageSettings ? JSON.parse(localStorageSettings) : { type: 'none', index: 0 }
   })
 
@@ -193,10 +196,12 @@ export default function useBackgroundSettings(
       }
     }
     handleProcessorChange()
-    window.localStorage.setItem(
-      SELECTED_BACKGROUND_SETTINGS_KEY,
-      JSON.stringify(backgroundSettings)
-    )
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(
+        SELECTED_BACKGROUND_SETTINGS_KEY,
+        JSON.stringify(backgroundSettings)
+      )
+    }
   }, [backgroundSettings, videoTrack, room, addProcessor, removeProcessor])
 
   return [backgroundSettings, setBackgroundSettings] as const

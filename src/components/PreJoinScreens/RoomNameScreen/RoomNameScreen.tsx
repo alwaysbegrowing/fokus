@@ -61,7 +61,10 @@ export default function RoomNameScreen({
     setRoomName(event.target.value)
   }
 
-  const hasUsername = !window.location.search.includes('customIdentity=true') && user?.displayName
+  const hasUsername =
+    typeof window !== 'undefined' &&
+    !window.location.search.includes('customIdentity=true') &&
+    user?.displayName
 
   return (
     <>

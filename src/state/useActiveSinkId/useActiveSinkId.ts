@@ -12,7 +12,10 @@ export default function useActiveSinkId() {
   }, [])
 
   useEffect(() => {
-    const selectedSinkId = window.localStorage.getItem(SELECTED_AUDIO_OUTPUT_KEY)
+    const selectedSinkId =
+      typeof window !== 'undefined'
+        ? window.localStorage.getItem(SELECTED_AUDIO_OUTPUT_KEY)
+        : undefined
     const hasSelectedAudioOutputDevice = audioOutputDevices.some(
       (device) => selectedSinkId && device.deviceId === selectedSinkId
     )

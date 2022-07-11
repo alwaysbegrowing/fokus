@@ -29,7 +29,9 @@ export default function VideoInputList() {
     | undefined
   const mediaStreamTrack = useMediaStreamTrack(localVideoTrack)
   const [storedLocalVideoDeviceId, setStoredLocalVideoDeviceId] = useState(
-    window.localStorage.getItem(SELECTED_VIDEO_INPUT_KEY)
+    typeof window !== 'undefined'
+      ? window.localStorage.getItem(SELECTED_VIDEO_INPUT_KEY)
+      : undefined
   )
   const localVideoInputDeviceId =
     mediaStreamTrack?.getSettings().deviceId || storedLocalVideoDeviceId
